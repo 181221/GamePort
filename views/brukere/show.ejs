@@ -1,38 +1,88 @@
 <% include ../partials/profilheader %>
-  <script>
-    
-  </script>
-
-<div class ="container segment">
-
-<div class="ui centered card">
-  <div class="image">
-    <% try { %>
-    <% if (brukeren[0].avatar === null) {%>
-        <img src="http://www.msecmarketing.com/wp-content/uploads/2017/01/default.gif">
-    <% } else { %>
-      <img src="<%= brukeren[0].avatar %>"> 
-     <% } %>
-    <% }catch(err) { %>
-       <img src="http://www.msecmarketing.com/wp-content/uploads/2017/01/default.gif">
-    <% } %>
-  </div>
- 
-  <div class="content">
-    <a class="header">
-       
-      <% try { %>
-        <%= brukeren[0].username %>
-        <% } catch(err) { %>
-        <script>
-          document.querySelector(".header").innerHTML = "finner ikke brukernavn";
-        </script>
-        
-      <% } %>
-    </a>
-  </div>
- </div>
-
-
-
+<script></script>
+<div class ="ui container segment" >
+  
+   <div class="ui grid">
+     
+      <div class="four wide column ">
+         <div class="ui card ">
+            <div class="image">
+               <% try { %>
+               <% if (brukeren[0].avatar === null) {%>
+               <img src="http://www.msecmarketing.com/wp-content/uploads/2017/01/default.gif">
+               <% } else { %>
+               <img src="<%= brukeren[0].avatar %>"> 
+               <% } %>
+               <% }catch(err) { %>
+               <img src="http://www.msecmarketing.com/wp-content/uploads/2017/01/default.gif">
+               <% } %>
+            </div>
+         </div>
+         <hr>
+         <div class="content">
+            <a class="header">
+               <% try { %>
+                 <%= brukeren[0].username %>
+               <% } catch(err) { %>
+                 <script>
+                    document.querySelector(".header").innerHTML = "finner ikke brukernavn";
+                 </script>
+               <% } %>
+            </a>
+            <div class="meta">
+               <span class="date">Create in Sep 2014</span>
+               <p>Lorem Ipsum er rett og slett dummytekst fra og for trykkeindustrien. Lorem Ipsum har vært bransjens standard for dummytekst helt siden 1500-tallet</p>
+            </div>
+            <div class="extra content">
+               <a>
+               <i class="users icon"></i>
+               2 Members
+               </a>
+            </div>
+         </div>
+      </div>
+      <div class="twelve wide column">
+         <!-- EKSEMPEL LOREM TIL SIDEN -->
+         <div class="ui container segment">
+            <div class="ui large feed">
+               <div class="event">
+                  <div class="label">
+                     <img src="/images/avatar/small/elliot.jpg">
+                  </div>
+                  <div class="content">
+                     <div class="summary">
+                        <a class="user">
+                        Elliot Fu
+                        </a> added you as a friend
+                        <div class="date">
+                           1 Hour Ago
+                        </div>
+                     </div>
+                     <div class="meta">
+                        <a class="like">
+                        <i class="like icon"></i> 4 Likes
+                        </a>
+                     </div>
+                  </div>
+               </div>
+               <div class="event">
+                  <div class="label">
+                     <i class="pencil icon"></i>
+                  </div>
+                  <div class="content">
+                     <div class="summary">
+                        You submitted a new post to the page
+                        <div class="date">
+                           3 days ago
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               
+            </div>
+         </div> <!-- CONTAINER -->
+      </div> <!-- twelve wide column -->
+   </div>  <!-- ui grid -->
+</div> <!-- CONTAINER -->
 <% include ../partials/footer %>
+ 
