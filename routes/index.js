@@ -64,9 +64,19 @@ router.get("/logout", function(req, res){
    req.flash("success", "Logged you out!"); //alltid før redirect!
    res.redirect("/");
 });
+router.get("/games", function(req, res) {
+  res.render("gamesHome");
+});
 
 router.get("/:username/games/spaceinvaders", function(req, res) {
-  res.render("spaceinvaders");
+     User.find({}, function(err, users){
+         if(err){
+             console.log(err);
+         } else {
+             res.render(__dirname + "/../" + "views/games/spaceinvaders/index", {brukeren: users});
+         }
+     });
+  
 });
 router.get("/games/spaceinvaders", function(req, res) {
     fs.readFile(__dirname + "/../" + "views/games/spaceinvaders/index.html", "utf8", function(err, text){

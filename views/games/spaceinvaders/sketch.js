@@ -7,6 +7,9 @@ var edge;
 
 function setup() {
 	var myCanvas = createCanvas(600,400);
+	myCanvas.addClass("ui container segment");
+	myCanvas.parent('myContainer');
+ 	
   ship = new Ship();
   for(var i = 0; i < 7;i++){
     aliens[i] = new Alien(i*80+60,40);
