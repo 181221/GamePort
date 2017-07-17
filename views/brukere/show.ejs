@@ -1,0 +1,38 @@
+<% include ../partials/profilheader %>
+  <script>
+    
+  </script>
+
+<div class ="container segment">
+
+<div class="ui centered card">
+  <div class="image">
+    <% try { %>
+    <% if (brukeren[0].avatar === null) {%>
+        <img src="http://www.msecmarketing.com/wp-content/uploads/2017/01/default.gif">
+    <% } else { %>
+      <img src="<%= brukeren[0].avatar %>"> 
+     <% } %>
+    <% }catch(err) { %>
+       <img src="http://www.msecmarketing.com/wp-content/uploads/2017/01/default.gif">
+    <% } %>
+  </div>
+ 
+  <div class="content">
+    <a class="header">
+       
+      <% try { %>
+        <%= brukeren[0].username %>
+        <% } catch(err) { %>
+        <script>
+          document.querySelector(".header").innerHTML = "finner ikke brukernavn";
+        </script>
+        
+      <% } %>
+    </a>
+  </div>
+ </div>
+
+
+
+<% include ../partials/footer %>

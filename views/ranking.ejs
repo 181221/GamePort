@@ -1,0 +1,34 @@
+<% include ./partials/profilheader %>
+<div class="ui raised very padded text container segment">
+<table class="ui large very basic collapsing celled table">
+  <thead>
+    <tr><th>Spillere</th>
+    <th>Score</th>
+  </tr></thead>
+  <tbody>
+    <%console.log(users);%>
+    <% users.forEach(function(bruker){ %>
+    <tr>
+      <td>
+        <h4 class="ui image header">
+          <img src="<%= bruker.avatar %>" class="ui mini rounded image">
+          <div class="content">
+            <%= bruker.username %>
+            <div class="sub header">Entertainment
+          </div>
+        </div>
+      </h4></td>
+      <td>
+        12
+      </td>
+    </tr>
+      
+   <% }); %>
+    
+    
+   
+  </tbody>
+</table>
+</div>
+
+<% include ./partials/footer %>
