@@ -65,11 +65,19 @@ router.get("/logout", function(req, res){
    res.redirect("/");
 });
 
-router.get("/games", function(req, res) {
-  res.render("games")
-  //./games/spaceinvaders/index.html
+router.get("/:username/games/spaceinvaders", function(req, res) {
+  res.render("spaceinvaders");
 });
-
+router.get("/games/spaceinvaders", function(req, res) {
+    fs.readFile(__dirname + "/../" + "views/games/spaceinvaders/index.html", "utf8", function(err, text){
+        if(err){
+            console.log(err);
+        } else {
+            res.send(text);
+        }
+        
+    });
+});
 
 function fullUrl(req) {
   return url.format({
