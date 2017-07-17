@@ -1,0 +1,27 @@
+
+//SETUP FOR GITHUB 
+git@github.com:brukernavn/repository.git
+git remote add origin <repository url>
+git pull origin master --allow-unrelated-histories
+git merge origin origin/master
+... add and commit here...
+git push origin master
+
+//HENT SHIT FRA HUBBEN 
+git pull https://github.com/brukernavn/repository.git
+
+git log
+//PUSH TIL HUBBEN
+git push -u origin master
+
+//SE MASTER
+git checkout master
+
+//CONFIG 
+c9 .git/config
+
+//SLETT .GIT
+rm -rf .git
+
+// COMMIT 
+git commit -m "legg til filer"

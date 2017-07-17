@@ -3,6 +3,7 @@ var router  = express.Router();
 var passport = require("passport");
 var User = require("../models/user");
 var fs = require('fs');
+var url = require("url");
 
 
 router.get("/", function(req, res){
@@ -13,21 +14,22 @@ router.get("/login", function(req, res){
     res.render("login");
 });
 
-router.post("/login", passport.authenticate("local", 
+
+router.post("/login",passport.authenticate("local", 
     {
         failureFlash: "Username or password is incorrect.",
         successFlash: "Welcome back!",
-        successRedirect: "/",
+        successRedirect:"",
         failureRedirect: "/login"
     }), function(req, res){
-        
+        res.redirect("/"+req.user.username);
 });
 
 router.get("/ranking", function(req, res) {
     User.find({}, function(err, users) {
         if(err){
             req.flash("error", err);
-            req.redirect("back");
+            res.redirect("back");
         } else {
             res.render("ranking", {users: users});
         }
@@ -69,7 +71,13 @@ router.get("/games", function(req, res) {
 });
 
 
-
+function fullUrl(req) {
+  return url.format({
+    protocol: req.protocol,
+    host: req.get('host'),
+    pathname: req.originalUrl
+  });
+}
 
 
 function isLoggedIn(req, res, next){
