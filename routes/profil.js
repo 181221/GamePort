@@ -19,16 +19,19 @@ router.get("/:username", function(req, res){
 router.get("/:username/settings", middleware.isLoggedIn, function(req,res){
     var reqbruker = req.params.username; 
     var currentUser = req.user.username; 
+    var query = User.findOne({ 'username': reqbruker });
     
     if(reqbruker === currentUser){
-        User.find(reqbruker, function(err, funnetBruker){
-            if(err){
-                req.flash("error", err.message);
-                res.redirect("/");
-            } else {
-                res.render("./brukere/settings", {brukeren: funnetBruker});
-            }
-        });
+        query.exec(function (err, funnetBruker) {
+            
+        if (err) {
+             console.log(err);
+        }else {
+            console.log(funnetBruker);
+          res.render("./brukere/settings", {brukeren: funnetBruker});
+        }
+  
+});
     }else {
         req.flash("error", "Du har ikke tillatelse!");
         res.redirect("/");
@@ -39,7 +42,10 @@ router.put("/:username/settings", middleware.isLoggedIn, function(req, res){
         if(err){
             console.log(err);
         } else {
-            res.redirect("/");
+            //finner bare første bruker i database ps oppdatater dette
+            console.log("updated" + updatedBruker);
+             console.log("updated: " + updatedBruker.username);
+            res.redirect("/"+req.params.username);
         }
     })
  

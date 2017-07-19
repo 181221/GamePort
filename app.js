@@ -6,14 +6,15 @@ var express     = require("express"),
     passport    = require("passport"),
     LocalStrategy = require("passport-local"),   //auth
     methodOverride = require("method-override"),
-    User        = require("./models/user");     //database
-    var fs = require('fs');
-    var indexRuter = require("./routes/index");
-    var profilRuter = require("./routes/profil");
+    //database
+    User        = require("./models/user"), 
+    Spill       = require("./models/spill"),
+    Battle      = require("./models/battle"),
+    fs = require('fs'),
+    indexRuter = require("./routes/index"),
+    profilRuter = require("./routes/profil");
 
-
-
-mongoose.connect("mongodb://localhost/gameportv2");
+mongoose.connect("mongodb://localhost/gameportv5");
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.set("view engine", "ejs");

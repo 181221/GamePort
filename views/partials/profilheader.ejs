@@ -2,14 +2,13 @@
 <% if(currentUser) { %>
 
   <ul class="nav nav-tabs senter">
-  <li role="presentation" class="active"><a href="/">Home</a></li>
+  <li role="presentation"><a href="/">Home</a></li>
   <li role="presentation"><a href="/<%= currentUser.username %>">Profile</a></li>
   <li role="presentation"><a href="/<%= currentUser.username %>/settings">Settings</a></li>
   <li role="presentation"><a href="/ranking">Ranking</a></li>
   <li role="presentation"><a href="/games">Games!</a></li>
 </ul>
 <% } %>
-
 
 
 
