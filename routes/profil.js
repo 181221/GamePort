@@ -38,7 +38,8 @@ router.get("/:username/settings", middleware.isLoggedIn, function(req,res){
     }
 });
 router.put("/:username/settings", middleware.isLoggedIn, function(req, res){
-    User.findOneAndUpdate(req.params.username, req.body.brukeren, function(err, updatedBruker){
+    var query = User.findOne({ 'username': req.params.username });
+    User.findOneAndUpdate(query, req.body.brukeren, function(err, updatedBruker){
         if(err){
             console.log(err);
         } else {
