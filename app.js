@@ -13,7 +13,7 @@ var express     = require("express"),
     fs = require('fs'),
     indexRuter = require("./routes/index"),
     profilRuter = require("./routes/profil");
-
+//require("./views/partials/header.js");
 mongoose.connect("mongodb://localhost/gameportv5");
 app.use(bodyParser.urlencoded({extended: true}));
 
