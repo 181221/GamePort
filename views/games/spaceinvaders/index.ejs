@@ -2,8 +2,7 @@
 <html>
 <head>
 	<title>P5 oving!</title>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.11/p5.min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.11/addons/p5.dom.min.js"></script>
+	
 	<script type="text/javascript" src="/spaceinvaders/sketch.js"></script>
 	<script type="text/javascript" src="/spaceinvaders/ship.js"></script>
 	<script type="text/javascript" src="/spaceinvaders/drop.js"></script>
@@ -12,20 +11,17 @@
 </head>
 <body>
 	<% include ../../partials/header %>
-	<% include ../../partials/profilheader %>
-	
 	
 	<div class ="ui container segment" >
-  
    <div class="ui grid">
       <div class="four wide column">
          <div class="ui card ">
             <div class="image">
                <% try { %>
-               <% if (brukeren[0].avatar === null) {%>
+               <% if (brukeren.avatar === null) {%>
                <img src="http://www.msecmarketing.com/wp-content/uploads/2017/01/default.gif">
                <% } else { %>
-               <img src="<%= brukeren[0].avatar %>"> 
+               <img src="<%= brukeren.avatar %>"> 
                <% } %>
                <% }catch(err) { %>
                <img src="http://www.msecmarketing.com/wp-content/uploads/2017/01/default.gif">
@@ -36,7 +32,7 @@
          <div class="content">
             <a class="header">
                <% try { %>
-                 <%= brukeren[0].username %>
+                 <%= brukeren.username %>
                <% } catch(err) { %>
                  <script>
                     document.querySelector(".header").innerHTML = "finner ikke brukernavn";
@@ -56,9 +52,34 @@
          </div>
          
       </div> <!-- four wide column -->
-      <div class="twelve wide column"id='myContainer'></div>
       
-     </div><!--CONTAINER -->
+      <div class="twelve wide column">
+         <div id="minContainer">
+            <p id="scoren"></p>
+            <p id="test"></p>
+            
+         </div>
+         </div>
+          <button id="knapp"> Submit score!</button>
+         <form>
+                <div class="form-group">
+                 <input class="form-control" id="finalScore" type="text" name="score">
+                 <script type="text/javascript">
+                    var test = document.querySelector("#finalScore");
+                    var score = document.querySelector("#scoren");
+                    var btn = document.querySelector("#knapp");
+                    score = score.innerHTML;
+                    btn.addEventListener("click",function(){
+                       finalScore.value =score;
+                    });
+                    
+                 </script>
+                </div>
+           
+               
+                  
+      </div>
+    </div><!--CONTAINER -->
 	
 
 

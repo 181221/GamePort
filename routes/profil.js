@@ -6,14 +6,15 @@ var middleware = require("../middleware");
 
 
 router.get("/:username", function(req, res){
-    User.find({ username: req.params.username }, function(err, funnetBruker){
-        if(err){
-            req.flash("error", err.message);
-            res.redirect("/");
-        } else {
-            res.render("./brukere/show", {brukeren: funnetBruker});
-        }
-    });
+     var brukeren = req.params.username;
+     User.findOne({"username":brukeren}, function(err, users){
+         if(err){
+             req.flash("error", err.message);
+             res.redirect("/");
+         } else {
+             res.render("./brukere/show", {brukeren: users});
+         }
+     });
 });
 
 router.get("/:username/settings", middleware.isLoggedIn, function(req,res){

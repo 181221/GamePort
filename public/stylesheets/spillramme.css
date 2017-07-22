@@ -1,0 +1,13 @@
+
+p#scoren {
+    display: inline;
+    position: absolute;
+    padding-left: 10px;
+    font-size: 34px;
+    color: white;
+    margin: 0;
+}
+#minContainer{
+    text-align: center;
+    position: relative;
+}

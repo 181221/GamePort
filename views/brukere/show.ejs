@@ -1,17 +1,15 @@
 <% include ../partials/header %>
-<% include ../partials/profilheader %>
-<script></script>
+
 <div class ="ui container segment" >
-  
    <div class="ui grid">
       <div class="four wide column">
          <div class="ui card ">
             <div class="image">
                <% try { %>
-               <% if (brukeren[0].avatar === null) {%>
+               <% if (brukeren.avatar === null) {%>
                <img src="http://www.msecmarketing.com/wp-content/uploads/2017/01/default.gif">
                <% } else { %>
-               <img src="<%= brukeren[0].avatar %>"> 
+               <img src="<%= brukeren.avatar %>"> 
                <% } %>
                <% }catch(err) { %>
                <img src="http://www.msecmarketing.com/wp-content/uploads/2017/01/default.gif">
@@ -22,7 +20,7 @@
          <div class="content">
             <a class="header">
                <% try { %>
-                 <%= brukeren[0].username %>
+                 <%= brukeren.username %>
                <% } catch(err) { %>
                  <script>
                     document.querySelector(".header").innerHTML = "finner ikke brukernavn";

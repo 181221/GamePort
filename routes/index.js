@@ -13,6 +13,19 @@ router.get("/", function(req, res){
 router.get("/login", function(req, res){
     res.render("login");
 });
+// router.get("/:username/games/spaceinvaders",function(req, res) {
+//     var brukeren = req.params.username;
+//     console.log(brukeren);
+//     User.findOne({"username":brukeren}, function(err, users){
+//          if(err){
+//              console.log(err);
+//          } else {
+//              console.log(users);
+//              res.render("spaceinvaders/index", {brukeren: users});
+//          }
+//      });
+    
+// });
 
 
 router.post("/login",passport.authenticate("local", 
@@ -22,7 +35,7 @@ router.post("/login",passport.authenticate("local",
         successRedirect:"",
         failureRedirect: "/login"
     }), function(req, res){
-        res.redirect("/"+req.user.username);
+        res.redirect("/" + req.user.username);
 });
 
 router.get("/ranking", function(req, res) {
@@ -64,12 +77,13 @@ router.get("/logout", function(req, res){
    req.flash("success", "Logged you out!"); //alltid før redirect!
    res.redirect("/");
 });
-router.get("/games", function(req, res) {
+router.get("/games", isLoggedIn,function(req, res) {
   res.render("gamesHome");
 });
 
 router.get("/:username/games/spaceinvaders", function(req, res) {
-     User.find({}, function(err, users){
+    var brukeren = req.params.username;
+     User.findOne({"username":brukeren}, function(err, users){
          if(err){
              console.log(err);
          } else {
@@ -77,9 +91,10 @@ router.get("/:username/games/spaceinvaders", function(req, res) {
          }
      });
   
-});
+ });
+ 
 router.get("/games/spaceinvaders", function(req, res) {
-    fs.readFile(__dirname + "/../" + "views/games/spaceinvaders/index.html", "utf8", function(err, text){
+    fs.readFile(__dirname + "/../" + "views/games/spaceinvaders/index", function(err, text){
         if(err){
             console.log(err);
         } else {
@@ -88,15 +103,6 @@ router.get("/games/spaceinvaders", function(req, res) {
         
     });
 });
-
-function fullUrl(req) {
-  return url.format({
-    protocol: req.protocol,
-    host: req.get('host'),
-    pathname: req.originalUrl
-  });
-}
-
 
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){

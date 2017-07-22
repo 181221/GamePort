@@ -4,11 +4,10 @@
 	<title>GamePort!</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css">
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.11/p5.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.11/addons/p5.dom.min.js"></script>
 	<link rel="stylesheet" href="/stylesheets/profilheader.css">
-	<script type="text/javascript" src="/spaceinvaders/aliens.js"></script>
-	
-	
-	
+	<link rel="stylesheet" href="/stylesheets/spillramme.css">
 </head>
 <nav class="navbar navbar-default">
         <div class="container-fluid">
@@ -38,6 +37,7 @@
             </div>
         </div>
     </nav>
+  
     
     <div class="container">
      <% if(error && error.length > 0){ %>
@@ -55,6 +55,18 @@
   
     <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <%if(currentUser){%>
+  <div class="head">
+  <ul class="nav nav-tabs senter">
+    <li><a class="active" href="/">Home</a></li>
+    <li role="presentation"><a href="/<%= currentUser.username %>">Profile</a></li>
+    <li role="presentation"><a href="/<%= currentUser.username %>/settings">Settings</a></li>
+    <li role="presentation"><a href="/ranking">Ranking</a></li>
+    <li role="presentation"><a href="/games">Games!</a></li>
+  </ul>
+</div>
+<% }%>
+
 
 <body>
 

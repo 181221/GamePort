@@ -18,7 +18,11 @@ function Ship() {
 	}
 
 	this.move = function(dir) {
+		if(ship.x > width){
+    		ship.setDir(-1);
+  		}else if (ship.x < 0){
+    		ship.setDir(1);
+  		}
 		this.x += this.xdir*5;
-
-	}
+		}
 }

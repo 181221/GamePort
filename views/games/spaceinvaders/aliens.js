@@ -2,11 +2,13 @@ function Alien(x,y){
 	this.x = x;
 	this.y = y;
 	this.r = 30;
+	this.xdir = 0.7;
 
-	this.xdir = 0.5;
+
+	this.setXdir = function(dir){
+		this.xdir = dir;
+	}
 	
-
-
 	this.show = function(){
 		fill(100,230,20);
 		ellipseMode(CENTER);
@@ -18,8 +20,6 @@ function Alien(x,y){
 		this.xdir *= -1;
 		this.y += this.r;
 	}
-
-
 
 	this.move = function(){
 		this.x += this.xdir;

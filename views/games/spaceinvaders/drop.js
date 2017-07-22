@@ -10,7 +10,7 @@ function Drop(x,y) {
 		ellipse(this.x, this.y, this.r*2, this.r*2);
 	}
 	this.move = function(){
-		this.y = this.y - 7;
+		this.y = this.y - 10;
 	}
 	this.hits = function(alien){
 		var d = dist(this.x, this.y, alien.x, alien.y);
