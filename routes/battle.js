@@ -13,5 +13,46 @@ router.get("/new",middle.isLoggedIn, function(req,res){
     res.render("Battles/new");
 });
 
+router.post("/",function(req, res){
+    var utfordrer = res.locals.currentUser;
+    var motstander = req.body.motstander;
+    var battle = new Battle();
+    
+  
+    User.findOne({"username": motstander}, function(err, user){
+         if(err){
+             console.log(err);
+         } else {
+             motstander = user;
+             var spiller = {
+                  id: req.user._id,
+                  username: utfordrer.username
+                };
+    
+             var motstander = {
+                 id: motstander._id,
+                 username: motstander.username
+                };
+            battle.spillere.push(spiller);
+            battle.spillere.push(motstander);
+            battle.save(function (err) {
+                if (err){
+                 console.log('Error on save!');
+                }
+                else{
+                    console.log("=================");
+                    console.log(battle.spillere);
+                    console.log("=================");
+                }
+            });
+            console.log("spilleren id er : " + spiller.id + " spilleren navn er : " + spiller.username )
+            console.log("motstanderen id : " + motstander.id + " motstanderen username: " + motstander.username );
+           
+         }
+   
+     });
+     
+});
+
 
 module.exports = router; //exportert slik at den kan brukes i app.js

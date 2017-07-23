@@ -1,7 +1,7 @@
 var mongoose = require("mongoose");
 
 var spillSchema = new mongoose.Schema({
-    _gameId: {type: mongoose.Schema.Types.ObjectId, ref: "Battle"},
+    id: {type: mongoose.Schema.Types.ObjectId, ref: "Battle"},
     name: String,
     beskrivelse: String,
     tidspunkt: Date
