@@ -6,18 +6,23 @@ var Spill = require("../models/spill");
 var middle = require("../middleware/index");
 
 router.get("/", function(req, res) {
-   res.send("dette er battle sin landing page!"); 
-});
-
-router.get("/new",middle.isLoggedIn, function(req,res){
-    res.render("Battles/new");
+   res.render("Battles/show"); 
 });
 
 router.post("/",function(req, res){
     var utfordrer = res.locals.currentUser;
     var motstander = req.body.motstander;
-    var battle = new Battle();
+    var utfordererIspill = req.body.spill;
     
+    var spill = new Spill({
+        name: utfordererIspill,
+        beskrivelse: "Battle: " + utfordererIspill + " vs " + motstander,
+        tidspunkt: Date.now()
+    });
+    
+    var battle = new Battle({spill: spill});
+    console.log(battle.spill.name);
+    battle.save();
   
     User.findOne({"username": motstander}, function(err, user){
          if(err){
@@ -33,16 +38,19 @@ router.post("/",function(req, res){
                  id: motstander._id,
                  username: motstander.username
                 };
+                
             battle.spillere.push(spiller);
             battle.spillere.push(motstander);
-            battle.save(function (err) {
+            battle.save(function (err, data) {
                 if (err){
                  console.log('Error on save!');
                 }
                 else{
                     console.log("=================");
                     console.log(battle.spillere);
+                    console.log(data);
                     console.log("=================");
+                    res.render("Battles/challenge", {battle: data});
                 }
             });
             console.log("spilleren id er : " + spiller.id + " spilleren navn er : " + spiller.username )
@@ -53,6 +61,11 @@ router.post("/",function(req, res){
      });
      
 });
+router.get("/new",middle.isLoggedIn, function(req,res){
+    res.render("Battles/new");
+});
+
+
 
 
 module.exports = router; //exportert slik at den kan brukes i app.js
