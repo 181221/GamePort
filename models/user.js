@@ -9,7 +9,6 @@ var UserSchema = new mongoose.Schema({
    etterNavn: String,
    email: String,
    avatar: String,
-   scores: [],
    isAdmin: {
       type: Boolean,
       default: false

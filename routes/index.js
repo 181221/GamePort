@@ -2,13 +2,35 @@ var express = require("express");
 var router  = express.Router();
 var passport = require("passport");
 var User = require("../models/user");
-var fs = require('fs');
-var url = require("url");
+
+
 
 
 router.get("/", function(req, res){
     res.render("landing");
 });
+router.get("/ranking", function(req, res) {
+    User.find({}, function(err, users) {
+        if(err){
+            req.flash("error", err);
+            res.redirect("back");
+        } else {
+            res.render("./games/ranking", {users: users});
+        }
+    });
+   
+});
+router.get("/:username/games/spaceinvaders", function(req, res) {
+    var brukeren = req.params.username;
+     User.findOne({"username":brukeren}, function(err, users){
+         if(err){
+             console.log(err);
+         } else {
+             res.render(__dirname + "/../" + "views/games/spaceinvaders/index", {brukeren: users});
+         }
+     });
+  
+ });
 
 router.get("/login", function(req, res){
     res.render("login");
@@ -38,22 +60,6 @@ router.post("/login",passport.authenticate("local",
         res.redirect("/" + req.user.username);
 });
 
-router.get("/ranking", function(req, res) {
-    User.find({}, function(err, users) {
-        if(err){
-            req.flash("error", err);
-            res.redirect("back");
-        } else {
-            res.render("ranking", {users: users});
-        }
-    });
-   
-});
-
-router.get("/secret", isLoggedIn, function(req, res) {
-   res.send("du nådde den hemmelige siden!"); 
-});
-
 router.get("/register", function(req, res){
     res.render("register");
 });
@@ -76,32 +82,6 @@ router.get("/logout", function(req, res){
    req.logout();
    req.flash("success", "Logged you out!"); //alltid før redirect!
    res.redirect("/");
-});
-router.get("/games", isLoggedIn,function(req, res) {
-  res.render("gamesHome");
-});
-
-router.get("/:username/games/spaceinvaders", function(req, res) {
-    var brukeren = req.params.username;
-     User.findOne({"username":brukeren}, function(err, users){
-         if(err){
-             console.log(err);
-         } else {
-             res.render(__dirname + "/../" + "views/games/spaceinvaders/index", {brukeren: users});
-         }
-     });
-  
- });
- 
-router.get("/games/spaceinvaders", function(req, res) {
-    fs.readFile(__dirname + "/../" + "views/games/spaceinvaders/index", function(err, text){
-        if(err){
-            console.log(err);
-        } else {
-            res.send(text);
-        }
-        
-    });
 });
 
 function isLoggedIn(req, res, next){

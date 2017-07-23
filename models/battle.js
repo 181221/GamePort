@@ -2,20 +2,16 @@
 var mongoose = require("mongoose");
 
 var battleSchema = new mongoose.Schema({
-   _battleId: Number,
    spillere: [{
-           type: mongoose.Schema.Types.ObjectId,
-           ref: "Bruker"
+      id: {type: mongoose.Schema.Types.ObjectId, ref: "Bruker"},
+      username: String,
+      score: Number
    }],
    spill:
        {
-           _spillId: {type: Number, ref: "Spill"}
+           id: {type: mongoose.Schema.Types.ObjectId, ref: "Spill"},
+           name: String
        },
-   poeng: [{
-       playerOne: Number,
-       playerTwo: Number
-   }],
-    
 });
 
 module.exports = mongoose.model("Battle", battleSchema);

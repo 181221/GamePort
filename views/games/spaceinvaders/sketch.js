@@ -7,7 +7,7 @@ var edge;
 var score;
 var myP;
 var level;
-
+var gameover;
 function levelUp(){
   for(var i = 0; i < 7;i++){
     aliens[i] = new Alien(i*80+60,40);
@@ -36,6 +36,7 @@ function setupAliens() {
 function setup() {
   level = 0;
   score = 100;
+  gameover = false;
   myP = createP(score);
   myP.id()
   myP.parent("scoren");
@@ -47,12 +48,28 @@ function setup() {
   ship = new Ship();
   
   setupAliens();
+  
+  var vinner = function(){
+    createCanvas(600,400);
+    
+  }
+
  
   //myP.position(70,25);
   
 }//setup
+function gameOver() {
+  createCanvas(600,400);
+  background(41);
+}
 
 function draw() {
+  if(gameover){
+    remove();
+    gameOver();
+    background(41);
+    
+  }
   edge = false;
   shipEdge = true
 	background(41);
@@ -84,6 +101,9 @@ function draw() {
      
      if(aliens[i].x + aliens[i].r > width || aliens[i].x + aliens[i].r < 60){
         edge = true;
+      }
+      if(aliens[i].hits(ship)){
+        gameover = true;
       }
   }
 

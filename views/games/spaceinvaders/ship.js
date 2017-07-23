@@ -2,6 +2,7 @@ function Ship() {
 	this.x = width/2;
 	this.xdir = 0;
 	this.y = height-20;
+	this.r = 15;
 
 	this.show = function() {
 		noStroke();

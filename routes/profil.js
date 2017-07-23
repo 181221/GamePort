@@ -17,7 +17,7 @@ router.get("/:username", function(req, res){
      });
 });
 
-router.get("/:username/settings", middleware.isLoggedIn, function(req,res){
+router.get("/:username/settings", isLoggedIn, function(req,res){
     var reqbruker = req.params.username; 
     var currentUser = req.user.username; 
     var query = User.findOne({ 'username': reqbruker });
@@ -38,7 +38,7 @@ router.get("/:username/settings", middleware.isLoggedIn, function(req,res){
         res.redirect("/");
     }
 });
-router.put("/:username/settings", middleware.isLoggedIn, function(req, res){
+router.put("/:username/settings", isLoggedIn, function(req, res){
     var query = User.findOne({ 'username': req.params.username });
     User.findOneAndUpdate(query, req.body.brukeren, function(err, updatedBruker){
         if(err){
@@ -52,5 +52,25 @@ router.put("/:username/settings", middleware.isLoggedIn, function(req, res){
     })
  
 });
+router.get("/:username/games/spaceinvaders", function(req, res) {
+    var brukeren = req.params.username;
+    
+     User.findOne({"username":brukeren}, function(err, users){
+         if(err){
+             console.log(err);
+         } else {
+             res.render("./games/spaceinvaders/index", {brukeren: users});
+         }
+     });
+  
+ });
+
+function isLoggedIn(req, res, next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    req.flash("error","You need to be logged in to do that!");//legger til flash. coden skal utføres før du redirecter!
+    res.redirect("/login");
+};
 
 module.exports = router; //exportert slik at den kan brukes i app.js

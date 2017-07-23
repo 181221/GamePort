@@ -2,7 +2,7 @@ function Alien(x,y){
 	this.x = x;
 	this.y = y;
 	this.r = 30;
-	this.xdir = 0.7;
+	this.xdir = 2.7;
 
 
 	this.setXdir = function(dir){
@@ -24,5 +24,9 @@ function Alien(x,y){
 	this.move = function(){
 		this.x += this.xdir;
 		
+	}
+	this.hits = function(ship){
+		var d = dist(this.x, this.y, ship.x, ship.y);
+		return d < this.r + ship.r;
 	}
 }
