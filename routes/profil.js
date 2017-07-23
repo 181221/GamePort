@@ -52,6 +52,9 @@ router.put("/:username/settings", isLoggedIn, function(req, res){
     })
  
 });
+router.get("/:username/games" ,middleware.isLoggedIn ,function(req, res) {
+  res.render("./games/gamesHome");
+});
 router.get("/:username/games/spaceinvaders", function(req, res) {
     var brukeren = req.params.username;
     

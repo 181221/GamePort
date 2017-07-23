@@ -3,10 +3,9 @@ var router  = express.Router();
 var User = require("../models/user");
 var Battle = require("../models/battle");
 var fs = require('fs');
-var middleware = require("../middleware");
+var middleware = require("../middleware/index");
 
-router.get("/:username/games" ,isLoggedIn,function(req, res) {
-    
+router.get("/:username/games" ,middleware.isLoggedIn ,function(req, res) {
   res.render("./games/gamesHome");
 });
 

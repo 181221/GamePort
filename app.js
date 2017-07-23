@@ -11,6 +11,7 @@ var express     = require("express"),
     Spill       = require("./models/spill"),
     Battle      = require("./models/battle"),
     fs = require('fs'),
+    battleRuter = require("./routes/battle"),
     indexRuter = require("./routes/index"),
     profilRuter = require("./routes/profil");
 //require("./views/partials/header.js");
@@ -42,6 +43,7 @@ app.use(function(req, res, next){ //tilgang til currentUser i alle templates
 });
 
 app.use("/", indexRuter);
+app.use("/battle", battleRuter);
 app.use("/", profilRuter);
 app.use(express.static(__dirname + "/views/games"));
 app.get("/*", function(req, res){
