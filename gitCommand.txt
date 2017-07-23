@@ -11,7 +11,7 @@ git push origin master
 git pull https://github.com/brukernavn/repository.git
 
 git log
-//PUSH TIL HUBBEN
+//PUSH TIL HUBBENaa
 git push -u origin master
 
 //SE MASTER
