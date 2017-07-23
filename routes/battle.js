@@ -12,18 +12,15 @@ router.get("/", function(req, res) {
 router.post("/",function(req, res){
     var utfordrer = res.locals.currentUser;
     var motstander = req.body.motstander;
-    var utfordererIspill = req.body.spill;
+    var spillnavn = req.body.spill;
+    var beskrivelse = "Battle: " + utfordrer.toString() + " vs " + motstander.toString();
     
-    var spill = new Spill({
-        name: utfordererIspill,
-        beskrivelse: "Battle: " + utfordererIspill + " vs " + motstander,
-        tidspunkt: Date.now()
-    });
+    var battle = new Battle();
     
-    var battle = new Battle({spill: spill});
-    console.log(battle.spill.name);
-    battle.save();
-  
+    battle.spill.name = spillnavn;
+    battle.spill.beskrivelse = beskrivelse;
+    battle.spill.tidspunkt  =  Date.now();
+    
     User.findOne({"username": motstander}, function(err, user){
          if(err){
              console.log(err);
