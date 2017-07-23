@@ -13,13 +13,14 @@ router.post("/",function(req, res){
     var utfordrer = res.locals.currentUser;
     var motstander = req.body.motstander;
     var spillnavn = req.body.spill;
-    var beskrivelse = "Battle: " + utfordrer.toString() + " vs " + motstander.toString();
+    var beskrivelse = "Battle: " + utfordrer.username.toString() + " vs " + motstander.toString();
     
     var battle = new Battle();
     
     battle.spill.name = spillnavn;
     battle.spill.beskrivelse = beskrivelse;
     battle.spill.tidspunkt  =  Date.now();
+    console.log(battle.spill);
     
     User.findOne({"username": motstander}, function(err, user){
          if(err){
