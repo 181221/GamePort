@@ -1,14 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>P5 oving!</title>
+	
+	<script type="text/javascript" src="/spaceinvaders/sketch.js"></script>
+	<script type="text/javascript" src="/spaceinvaders/ship.js"></script>
+	<script type="text/javascript" src="/spaceinvaders/drop.js"></script>
+	<script type="text/javascript" src="/spaceinvaders/aliens.js"></script>
+	
+</head>
+<body>
+
 <% include ../partials/header %>
-<div="container segment">
-    <div>
-        <h1>Challenge: <%= battle.spillere[0].username%> vs <%= battle.spillere[1].username%></h1>
+
+<div class="ui container">
+    
+    <div class ="overskrift">
+        <h1>Challenge: </h1>
+        <h4><%= battle.spillere[0].username%> vs <%= battle.spillere[1].username%></h4>
+    </div>
+    
+   
+    
+    <div class="gamecontent">
+        <div id="minContainer">
+            <p id="scoren"></p>
+            <p id="test"></p>
+            
+        </div>
+        
+    </div>
+    <div id="knapp">
         
     </div>
     
     
-    <p>
-        beskrivelse: <%= battle.spill.beskrivelse %>
-    </p>
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    
+    
     
 </div>
 

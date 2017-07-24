@@ -1,0 +1,14 @@
+.overskrift {
+    padding-top: 10px;
+    text-align: center;
+    font-family: sans-serif;
+    font-style: normal;
+    font-weight: bold;
+}
+.overskrift h4 {
+    margin-top: 0px;
+}
+.knapp {
+    float: right;
+    margin-right: 50%; 
+}

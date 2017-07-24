@@ -34,20 +34,18 @@ function setupAliens() {
 
 
 function setup() {
-  level = 0;
-  score = 100;
-  gameover = false;
-  myP = createP(score);
-  myP.id()
-  myP.parent("scoren");
   
+ 
   var myCanvas = createCanvas(600,400);
  	myCanvas.parent("minContainer");
-  
-	
-  ship = new Ship();
-  
-  setupAliens();
+ 	myP = createP(score);
+  myP.id()
+  myP.parent("scoren");
+  resetSketch();
+	var button = createButton("Start Game!");
+	button.parent("knapp");
+	button.mousePressed(resetSketch);
+  noLoop();
   
   var vinner = function(){
     createCanvas(600,400);
@@ -58,17 +56,27 @@ function setup() {
   //myP.position(70,25);
   
 }//setup
+function resetSketch() {
+  level = 0;
+  score = 0;
+  gameover = false;
+  started = true;
+  
+  
+  ship = new Ship();
+  setupAliens();
+  loop();
+}
+
 function gameOver() {
   createCanvas(600,400);
   background(41);
 }
 
 function draw() {
-  if(gameover){
-    remove();
-    gameOver();
-    background(41);
-    
+  if(started){
+    if(gameover){
+      noLoop();
   }
   edge = false;
   shipEdge = true
@@ -118,6 +126,8 @@ function draw() {
     
   }
 
+  }
+  
 }//draw
 
 

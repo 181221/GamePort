@@ -11,16 +11,16 @@
                     <% console.log(brukeren)%>
                     <% console.log(brukeren.etterNavn) %>
                     
-                    <input class="form-control" type="text" name="brukeren[forNavn]" value=<%= brukeren.forNavn%>>
+                    fornavn: <input class="form-control" type="text" name="brukeren[forNavn]" value=<%= brukeren.forNavn%>>
                 </div>
                 <div class="form-group">
-                    <input class="form-control" type="text" name="brukeren[etterNavn]" value=<%= brukeren.etterNavn%>>
+                    etternavn: <input class="form-control" type="text" name="brukeren[etterNavn]" value=<%= brukeren.etterNavn%>>
                 </div>
                 <div class="form-group">
-                    <input class="form-control" type="text" name="brukeren[email]" value=<%= brukeren.email%>>
+                    Email: <input class="form-control" type="email" name="brukeren[email]" value=<%= brukeren.email%>>
                 </div>
                 <div class="form-group">
-                    <input class="form-control" type="text" name="brukeren[avatar]" value=<%= brukeren.avatar%>>
+                    Image: <input class="form-control" type="text" name="brukeren[avatar]" value=<%= brukeren.avatar%>>
                 </div>
                 <div class="form-group">
                     <button class="btn btn-lg btn-primary btn-block">Update!</button>
