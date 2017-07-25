@@ -4,9 +4,16 @@ var User = require("../models/user");
 var Battle = require("../models/battle");
 var Spill = require("../models/spill");
 var middle = require("../middleware/index");
-
+var mongoose = require('mongoose');
 router.get("/", function(req, res) {
-   res.render("Battles/show"); 
+    Battle.find({}, function(err, data){
+        if(err){
+            console.log(err);
+        }else {
+            res.render("Battles/show",{battles: data}); 
+        }
+    })
+   
 });
 
 router.post("/",function(req, res){
@@ -67,13 +74,33 @@ router.put("/:battle_id/:player_id",function(req,res){
            console.log("found currentSpiller: " + currentSpiller);
            console.log(found.spillere[0].id.equals(req.params.player_id));
            found.spillere[0].score = 10;
+           found.spillere[0].harspilt = true;
            found.save();
            console.log("scoren er " + found.spillere[0].score);
            req.flash("success", "battle updated!")
-           res.redirect("/battle");
+           res.redirect("/battle/" + currentSpiller);
        }
    }) 
 });
+router.get("/new",middle.isLoggedIn, function(req,res){
+    res.render("Battles/new");
+});
+
+router.get("/:player_id",function(req, res){
+        Battle.find({}).populate({
+             path: 'spillere',
+             }).where('spillere.id').equals(req.params.player_id).exec(function (err, person) {
+                if (err){
+                    console.log(err);
+                }else{
+                    for(var i = 0; i < person.length;i++){
+                        console.log(person[i].spill);
+                        console.log(person[i].spillere[0].username);
+                    }
+                }
+    });
+});
+
 
 // router.put("/:battle_id", function(req,res){
 //     Battle.findByIdAndUpdate(req.params.battle_id, req.body.score, function(err, updatedScore){
@@ -87,9 +114,7 @@ router.put("/:battle_id/:player_id",function(req,res){
 //   });
 // });
 
-router.get("/new",middle.isLoggedIn, function(req,res){
-    res.render("Battles/new");
-});
+
 
 
 

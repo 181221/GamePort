@@ -2,5 +2,29 @@
 <h1>dette er battle sin landingsside, implementer utford user og ..</h1>
 <a href="/battle/new">Challenge an opponent to a battle </a>
 
+<div class="ui raised very padded text container segment">
+<table class="ui large very basic collapsing celled table">
+  <thead>
+    <tr><th>Battle!</th>
+    <th>Score</th>
+  </tr></thead>
+  <tbody>
+    <% battles.forEach(function(bruker){ %>
+    <tr>
+      <td>
+        <h4 class="ui image header">
+          <img src="<%= bruker.avatar %>" class="ui mini rounded image">
+          <div class="content">
+            <%= bruker.username %>
+            <div class="sub header">Entertainment
+          </div>
+        </div>
+      </h4></td>
+      <td>
+        12
+      </td>
+    </tr>
+      
+   <% }); %>
 
 <% include ../partials/footer %>
