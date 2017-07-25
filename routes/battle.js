@@ -55,10 +55,38 @@ router.post("/",function(req, res){
             console.log("motstanderen id : " + motstander.id + " motstanderen username: " + motstander.username );
            
          }
-   
      });
-     
 });
+router.put("/:battle_id/:player_id",function(req,res){
+   Battle.findById(req.params.battle_id, function(err,found){
+       if(err){
+           console.log(err);
+       }else{
+           console.log("found battle: " + found);
+           var currentSpiller = req.params.player_id;
+           console.log("found currentSpiller: " + currentSpiller);
+           console.log(found.spillere[0].id.equals(req.params.player_id));
+           found.spillere[0].score = 10;
+           found.save();
+           console.log("scoren er " + found.spillere[0].score);
+           req.flash("success", "battle updated!")
+           res.redirect("/battle");
+       }
+   }) 
+});
+
+// router.put("/:battle_id", function(req,res){
+//     Battle.findByIdAndUpdate(req.params.battle_id, req.body.score, function(err, updatedScore){
+//       if(err){
+//           res.redirect("back");
+//       } else {
+//           req.flash("success", "Battle updated!");
+//           console.log(updatedScore)
+//           res.redirect("/battle");
+//       }
+//   });
+// });
+
 router.get("/new",middle.isLoggedIn, function(req,res){
     res.render("Battles/new");
 });

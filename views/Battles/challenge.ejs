@@ -30,13 +30,13 @@
         </div>
         
     </div>
-    <div id="knapp">
-        
-    </div>
-    <form action="/battle/<%= battle.spillere[0].id%>?_method=PUT" method="POST">
+    <div id="knapp"></div>
+    <%console.log("fra challenge filen: " + battle.spillere[0].id)%>
+    <form action="/battle/<%= battle._id + "/" + battle.spillere[0].id%>?_method=PUT" method="POST">
          <div class="form-group">
                  <input class="form-control" id="finalScore" type="number" name="score">
                  <script type="text/javascript">
+                    
                     var test = document.querySelector("#finalScore");
                     var score = document.querySelector("#scoren");
                     var btn = document.querySelector("#knapp");
@@ -44,7 +44,6 @@
                     btn.addEventListener("click",function(){
                        finalScore.value =score;
                     });
-                    
                  </script>
          </div>
     </form>

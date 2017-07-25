@@ -8,6 +8,7 @@ var score;
 var myP;
 var level;
 var gameover;
+var button;
 function levelUp(){
   for(var i = 0; i < 7;i++){
     aliens[i] = new Alien(i*80+60,40);
@@ -42,8 +43,8 @@ function setup() {
   myP.id()
   myP.parent("scoren");
   resetSketch();
-	var button = createButton("Start Game!");
-	button.parent("knapp");
+	button = createButton("Start Game!");
+	//button.parent("knapp");
 	button.mousePressed(resetSketch);
   noLoop();
   
@@ -57,6 +58,7 @@ function setup() {
   
 }//setup
 function resetSketch() {
+  button.hide();
   level = 0;
   score = 0;
   gameover = false;
@@ -66,6 +68,7 @@ function resetSketch() {
   ship = new Ship();
   setupAliens();
   loop();
+  
 }
 
 function gameOver() {
@@ -77,7 +80,8 @@ function draw() {
   if(started){
     if(gameover){
       noLoop();
-  }
+    }
+  
   edge = false;
   shipEdge = true
 	background(41);

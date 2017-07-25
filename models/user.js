@@ -9,6 +9,10 @@ var UserSchema = new mongoose.Schema({
    etterNavn: String,
    email: String,
    avatar: String,
+   utfordringer: [{
+      id: {type: mongoose.Schema.Types.ObjectId, ref: "Battle"},
+      ferdig: {type: Boolean, default: false}
+   }],
    isAdmin: {
       type: Boolean,
       default: false
