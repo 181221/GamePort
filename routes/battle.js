@@ -102,16 +102,25 @@ router.get("/new",middle.isLoggedIn, function(req,res){
 router.get("/:player_id",function(req, res){
         Battle.find({}).populate({
              path: 'spillere',
-             }).where('spillere.id').equals(req.params.player_id).exec(function (err, person) {
+             }).where('spillere.id').equals(req.params.player_id).exec(function (err, battle) {
                 if (err){
                     console.log(err);
                 }else{
+                    var battler = []; //tab med info om hver spiller i hver battle. 
+                    for(var i = 0; i < battle.length; i++){
+                        console.log(battle[i].spill.name);
+                        for(var k = 0; k < battle[i].spillere.length; k++){
+                            console.log(battle[i].spillere[k].username);
+                        }
+                    }
                     //kode til bruk i ejs filen.
                     // for(var i = 0; i < person.length;i++){
                     //     console.log(person[i].spill);
                     //     console.log(person[i].spillere[0].username);
                     // }
-                    res.send("redirecter deg til battles show");
+                    
+                   
+                    res.render("Battles/show", {battle:battle});
                 }
     });
 });

@@ -1,30 +1,49 @@
 <% include ../partials/header %>
-<h1>dette er battle sin landingsside, implementer utford user og ..</h1>
-<a href="/battle/new">Challenge an opponent to a battle </a>
+<style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
 
-<div class="ui raised very padded text container segment">
-<table class="ui large very basic collapsing celled table">
-  <thead>
-    <tr><th>Battle!</th>
-    <th>Score</th>
-  </tr></thead>
-  <tbody>
-    <% battles.forEach(function(bruker){ %>
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>
+
+<h1></h1>
+<a href="/battle/new">Challenge an opponent to a battle </a>
+<div class="ui container">
+  <h1> Battle! </h1>
+  <table>
     <tr>
-      <td>
-        <h4 class="ui image header">
-          <img src="<%= bruker.avatar %>" class="ui mini rounded image">
-          <div class="content">
-            <%= bruker.username %>
-            <div class="sub header">Entertainment
-          </div>
-        </div>
-      </h4></td>
-      <td>
-        12
-      </td>
+      <th> Game </th>
+      <th> Player 1 </th>
+      <th> PLayer 2 </th>
+      <th> Score 1 </th>
+      <th> Score 2 </th>
     </tr>
-      
-   <% }); %>
+  <% for(var i = 0; i < battle.length; i ++){ %>
+  <tr>
+   <% for(var k = 0; k < battle[i].spillere.length-1; k++){%>
+    <td> <%= i %> </td>
+    <td> <%= battle[i].spillere[k].username %> </td>
+    <td> <%= battle[i].spillere[k+1].username %> </td>
+    <td> <%= battle[i].spillere[k].score %> </td>
+    <td> <%= battle[i].spillere[k+1].score %> </td>
+    </tr>
+    <% } %> 
+  
+  <% } %>
+  
+  
+</table>
+
 
 <% include ../partials/footer %>
