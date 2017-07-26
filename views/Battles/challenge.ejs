@@ -31,7 +31,8 @@
         
     </div>
     <div id="knapp"></div>
-    <%console.log("fra challenge filen: " + battle.spillere[0].id)%>
+    <%console.log("fra challenge filen: battle id " + battle._id)%>
+    <%console.log("fra challenge filen: spiller 0 id " + battle.spillere[0].id)%>
     <form action="/battle/<%= battle._id + "/" + battle.spillere[0].id%>?_method=PUT" method="POST">
          <div class="form-group">
                  <input class="form-control" id="finalScore" type="number" name="score">

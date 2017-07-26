@@ -7,19 +7,13 @@ var middle = require("../middleware/index");
 var mongoose = require('mongoose');
 
 //Battle landing page. 
-router.get("/", function(req, res) {
-    
-    // Battle.find({}, function(err, data){
-    //     if(err){
-    //         console.log(err);
-    //     }else {
-    //         res.render("Battles/show",{battles: data}); 
-    //     }
-    // })
-   
+router.get("/", middle.isLoggedIn, function(req, res) {
+    res.render("Battles/index");
 });
+
 /*
 * Oppretter ny battle mellom utfordrer og motspiller. Sender spilleren til arena.
+* Pusher en utfordring til motstanderen. 
 * Mye som consolelog som må fjernes. 
 */
 router.post("/",function(req, res){
@@ -27,7 +21,6 @@ router.post("/",function(req, res){
     var motstander = req.body.motstander;
     var spillnavn = req.body.spill;
     var beskrivelse = "Battle: " + utfordrer.username.toString() + " vs " + motstander.toString();
-    
     var battle = new Battle();
     
     battle.spill.name = spillnavn;
@@ -40,6 +33,8 @@ router.post("/",function(req, res){
              console.log(err);
          } else {
              motstander = user;
+             console.log("battle id er = " + battle._id);
+             
              var spiller = {
                   id: req.user._id,
                   username: utfordrer.username
@@ -57,39 +52,66 @@ router.post("/",function(req, res){
                  console.log('Error on save!');
                 }
                 else{
-                    console.log("=================");
-                    console.log(battle.spillere);
-                    console.log(data);
-                    console.log("=================");
-                    res.render("Battles/challenge", {battle: data});
+                    
+                //Pusher ny utfordring til motstanderen 
+                    var nyUtfordring = {
+                     id: battle._id,
+                     ferdig: false
+                  };
+                       user.utfordringer.push(nyUtfordring);
+                       user.save();
+                       
+                //console.log dritt som skal vekk.
+                console.log("fra nybattle ruten motstander.battle.id = : " + user.utfordringer[0].id);
+                console.log("battle iden er ==== " + data._id )
+                console.log("=================");
+                console.log(battle.spillere);
+                console.log(data);
+                console.log("=================");
+                //rendrer og sender data til challenge.ejs filen. 
+                res.render("Battles/challenge", {battle: data});
                 }
             });
+            //skal fjernes
             console.log("spilleren id er : " + spiller.id + " spilleren navn er : " + spiller.username )
             console.log("motstanderen id : " + motstander.id + " motstanderen username: " + motstander.username );
            
          }
      });
 });
-//Updater scoren til spilleren som har utfordret til kamp. 
+/* Updater scoren til spilleren som har utfordret til kamp. 
+*  Oppdaterer utfordringer til spilleren.
+*/
 router.put("/:battle_id/:player_id",function(req,res){
-   Battle.findById(req.params.battle_id, function(err,found){
+    var battleId = req.params.battle_id;
+    Battle.findById(req.params.battle_id, function(err,found){
        if(err){
            console.log(err);
        }else{
-           console.log("found battle: " + found);
            var currentSpiller = req.params.player_id;
-           console.log("found currentSpiller: " + currentSpiller);
-           console.log(found.spillere[0].id.equals(req.params.player_id));
+           console.log("utforderer: " + found.spillere[0].username);
+           console.log("motstander: " + found.spillere[1].username);
            found.spillere[0].score = 10; //må sende inn score fra form.
-           found.spillere[0].harspilt = true; 
-           found.save();
-           console.log("scoren er " + found.spillere[0].score);
-           console.log("spilleren har spilt: " + found.spillere[0].harspilt);
-           req.flash("success", "battle updated!")
-           res.redirect("/battle/" + currentSpiller);
+           found.save(); //lagrer battle
+           User.findById(currentSpiller,function(err, user){ //søker etter currentspiller. 
+               if(err){
+                   console.log(err);
+               }else {
+                   //currentspiller skal alltid ligge på plass en fra redirect. 
+                   var nyUtfordring = {
+                     id: battleId,
+                     ferdig: true
+                  };
+                  user.utfordringer.push(nyUtfordring);
+                  console.log(user.utfordringer[0].ferdig);
+                  req.flash("success", "battle updated!");
+                  res.redirect("/battle/" + currentSpiller);
+               }
+           });
        }
    }) 
 });
+
 //Ny kamp
 router.get("/new",middle.isLoggedIn, function(req,res){
     res.render("Battles/new");
@@ -106,39 +128,10 @@ router.get("/:player_id",function(req, res){
                 if (err){
                     console.log(err);
                 }else{
-                    var battler = []; //tab med info om hver spiller i hver battle. 
-                    for(var i = 0; i < battle.length; i++){
-                        console.log(battle[i].spill.name);
-                        for(var k = 0; k < battle[i].spillere.length; k++){
-                            console.log(battle[i].spillere[k].username);
-                        }
-                    }
-                    //kode til bruk i ejs filen.
-                    // for(var i = 0; i < person.length;i++){
-                    //     console.log(person[i].spill);
-                    //     console.log(person[i].spillere[0].username);
-                    // }
-                    
-                   
                     res.render("Battles/show", {battle:battle});
                 }
     });
 });
-
-
-// router.put("/:battle_id", function(req,res){
-//     Battle.findByIdAndUpdate(req.params.battle_id, req.body.score, function(err, updatedScore){
-//       if(err){
-//           res.redirect("back");
-//       } else {
-//           req.flash("success", "Battle updated!");
-//           console.log(updatedScore)
-//           res.redirect("/battle");
-//       }
-//   });
-// });
-
-
 
 
 
