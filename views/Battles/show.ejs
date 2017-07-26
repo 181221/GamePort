@@ -1,49 +1,68 @@
 <% include ../partials/header %>
 <style>
-table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-}
-
-td, th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-}
-
-tr:nth-child(even) {
-    background-color: #dddddd;
-}
+  .skiftFarge {
+    backgroundColor: green;
+  }
 </style>
+<div class="ui container">
+<table class="ui selectable inverted table">
+  <thead>
+    <tr>
+      <th>Game</th>
+      <th>Challenger</th>
+      <th>Oppenent</th>
+      <th class="right aligned">Score C</th>
+      <th class="right aligned">Score O</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% for(var i = 0; i < battle.length; i ++){ %>
+    <tr>
+      <% for(var k = 0; k < battle[i].spillere.length-1; k++){%>
+      <% var challengerScore = battle[i].spillere[k].score;%>
+      <% var opponentScore = battle[i].spillere[k+1].score;%>
+      <td><span><a href="#"> <%= i %> </a></span><%=": " + battle[i].spill.name  %></td>
+      <td><%= battle[i].spillere[k].username; %></td>
+      <td><%= battle[i].spillere[k+1].username; %></td>
+      <td class="right aligned"><%= challengerScore %></td>
+      <td class="right aligned"><%= opponentScore %></td>
+    </tr>
+    <% } %> 
+  </tbody>
+  <% } %>
+</table>
+<table class="ui inverted table">
+  <thead>
+    <tr>
+      <th>Games</th>
+      <th>Wins</th>
+      <th>Losses</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%=battle.length%></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <h1></h1>
 <a href="/battle/new">Challenge an opponent to a battle </a>
-<div class="ui container">
-  <h1> Battle! </h1>
-  <table>
-    <tr>
-      <th> Game </th>
-      <th> Player 1 </th>
-      <th> PLayer 2 </th>
-      <th> Score 1 </th>
-      <th> Score 2 </th>
-    </tr>
-  <% for(var i = 0; i < battle.length; i ++){ %>
-  <tr>
-   <% for(var k = 0; k < battle[i].spillere.length-1; k++){%>
-    <td> <%= i %> </td>
-    <td> <%= battle[i].spillere[k].username %> </td>
-    <td> <%= battle[i].spillere[k+1].username %> </td>
-    <td> <%= battle[i].spillere[k].score %> </td>
-    <td> <%= battle[i].spillere[k+1].score %> </td>
-    </tr>
-    <% } %> 
-  
-  <% } %>
-  
-  
-</table>
 
 
 <% include ../partials/footer %>
