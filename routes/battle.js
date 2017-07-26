@@ -108,15 +108,18 @@ router.post("/",function(req, res){
 */
 router.put("/:battle_id/:player_id",function(req,res){
     var battleId = req.params.battle_id;
-    Battle.findById(req.params.battle_id, function(err,found){
+    Battle.findById(req.params.battle_id, function(err,battle){
        if(err){
            console.log(err);
        }else{
            var currentSpiller = req.params.player_id;
-           console.log("utforderer: " + found.spillere[0].username);
-           console.log("motstander: " + found.spillere[1].username);
-           found.spillere[0].score = 10; //må sende inn score fra form.
-           found.save(); //lagrer battle
+           console.log(currentSpiller === String(battle.spillere[0].id));
+           var riktigIndex = riktigSpiller(currentSpiller, battle.spillere[0].id)
+           console.log("riktigindex: " + riktigIndex)
+           console.log("utforderer: " + battle.spillere[0].username);
+           console.log("motstander: " + battle.spillere[1].username);
+           battle.spillere[riktigIndex].score = req.body.score; //må sende inn score fra form.
+           battle.save(); //lagrer battle
            User.findById(currentSpiller,function(err, user){ //søker etter currentspiller. 
                if(err){
                    console.log(err);
@@ -135,6 +138,13 @@ router.put("/:battle_id/:player_id",function(req,res){
        }
    }) 
 });
+function riktigSpiller(currentSpiller, foersteSpiller){
+    if(currentSpiller === String(foersteSpiller)){
+        return 0;
+    }else{
+        return 1;
+    }
+}
 
 //Ny kamp
 router.get("/new",middle.isLoggedIn, function(req,res){

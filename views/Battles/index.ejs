@@ -9,6 +9,7 @@
             <p><a href="#"><span id="nyeUtfordringer"><%= antallUtfordringer %> Nye Utfordringer!!</span></a></p>
             <% }%>
             <div id ="utfordringene">
+                <!-- LEGGER TIL UTFORDRINGER HER! -->
                 <ul>
                     
                 </ul>
@@ -45,18 +46,14 @@
 
 <script type="text/javascript">
     var antall = <%=antallUtfordringer%>;
-    var str = "<%=battleId%>".slice(); //får en strengrepresentasjon av idene
+    var str = "<%=battleId%>".slice(); //får tilbake en strengrepresentasjon av id_ene
     var battles = str.split(","); //lager en tabell
     console.log(battles[0]);
-    
-    
-    
+    //viser utfordrine til spilleren. 
     $("span").on("click", function(event){
             for(var i = 0; i < battles.length; i ++){
                 $("#utfordringene ul").append("<li><span><i class='fa fa-hourglass'></i></span> "+battles[i]+"</li>");
             }
-    
-    	//$("ul").append("<li><span><i class='fa fa-trash-o'></i></span> "+todoText+"</li>");
     });
 </script>
 
