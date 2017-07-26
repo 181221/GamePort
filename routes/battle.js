@@ -8,7 +8,30 @@ var mongoose = require('mongoose');
 
 //Battle landing page. 
 router.get("/", middle.isLoggedIn, function(req, res) {
-    res.render("Battles/index");
+    var currentUser = res.locals.currentUser;
+    console.log("current userid er " + currentUser.id);
+    
+    
+    User.findById(currentUser.id).populate("utfordringer").exec(function (err, user) {
+                if (err){
+                    console.log(err);
+                }else{
+                    console.log("===========UTFORDRINGER");
+                    var utfordringBattleId = [];
+                    var spiller = user.utfordringer;
+                    for(var i = 0; i < spiller.length;i++){
+                        if(!spiller[i].ferdig){
+                            utfordringBattleId.push(spiller[i].id);
+                            console.log(spiller[i].id);
+                        }
+                    }
+                    console.log("===========UTFORDRINGER");
+                    var antall = utfordringBattleId.length;
+                    console.log(antall);
+                    
+                    res.render("Battles/index", {antallUtfordringer: antall, battleId: utfordringBattleId} );
+                }
+    });
 });
 
 /*
@@ -32,9 +55,8 @@ router.post("/",function(req, res){
          if(err){
              console.log(err);
          } else {
+             //Oppretter to spiller og pusher dem til battle skjema. 
              motstander = user;
-             console.log("battle id er = " + battle._id);
-             
              var spiller = {
                   id: req.user._id,
                   username: utfordrer.username
@@ -45,15 +67,16 @@ router.post("/",function(req, res){
                  username: motstander.username
                 };
                 
-            battle.spillere.push(spiller);
-            battle.spillere.push(motstander);
-            battle.save(function (err, data) {
+             battle.spillere.push(spiller);
+             battle.spillere.push(motstander);
+             
+             //Lagrer skjemaet
+             battle.save(function (err, data) {
                 if (err){
                  console.log('Error on save!');
                 }
                 else{
-                    
-                //Pusher ny utfordring til motstanderen 
+                    //Pusher ny utfordring til motstanderen 
                     var nyUtfordring = {
                      id: battle._id,
                      ferdig: false
@@ -61,17 +84,18 @@ router.post("/",function(req, res){
                        user.utfordringer.push(nyUtfordring);
                        user.save();
                        
-                //console.log dritt som skal vekk.
-                console.log("fra nybattle ruten motstander.battle.id = : " + user.utfordringer[0].id);
-                console.log("battle iden er ==== " + data._id )
-                console.log("=================");
-                console.log(battle.spillere);
-                console.log(data);
-                console.log("=================");
-                //rendrer og sender data til challenge.ejs filen. 
-                res.render("Battles/challenge", {battle: data});
-                }
-            });
+                    //console.log dritt som skal vekk.
+                    console.log("fra nybattle ruten motstander.battle.id = : " + user.utfordringer[0].id);
+                    console.log("battle iden er ==== " + data._id )
+                    console.log("=================");
+                    console.log(battle.spillere);
+                    console.log(data);
+                    console.log("=================");
+                
+                    //rendrer og sender data til challenge.ejs filen. 
+                    res.render("Battles/challenge", {battle: data});
+                    }
+                });
             //skal fjernes
             console.log("spilleren id er : " + spiller.id + " spilleren navn er : " + spiller.username )
             console.log("motstanderen id : " + motstander.id + " motstanderen username: " + motstander.username );
@@ -132,8 +156,6 @@ router.get("/:player_id",function(req, res){
                 }
     });
 });
-
-
 
 
 module.exports = router; //exportert slik at den kan brukes i app.js

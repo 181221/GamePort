@@ -5,10 +5,17 @@
     <h1 class>landing page til battle arena!</h1>
     <div class ="ui grid">
         <div class="twelve wide column">
-            <p>jiwjejiwe</p>
+            <%if(antallUtfordringer > 0){%>
+            <p><a href="#"><span id="nyeUtfordringer"><%= antallUtfordringer %> Nye Utfordringer!!</span></a></p>
+            <% }%>
+            <div id ="utfordringene">
+                <ul>
+                    
+                </ul>
+            </div>
         </div>
         <div class="four wide columd">
-            <p>heiewhw</p>
+            <p></p>
         </div>
     </div>
     <div class="ui three column grid">
@@ -36,6 +43,21 @@
 </div>
 
 
-
+<script type="text/javascript">
+    var antall = <%=antallUtfordringer%>;
+    var str = "<%=battleId%>".slice(); //får en strengrepresentasjon av idene
+    var battles = str.split(","); //lager en tabell
+    console.log(battles[0]);
+    
+    
+    
+    $("span").on("click", function(event){
+            for(var i = 0; i < battles.length; i ++){
+                $("#utfordringene ul").append("<li><span><i class='fa fa-hourglass'></i></span> "+battles[i]+"</li>");
+            }
+    
+    	//$("ul").append("<li><span><i class='fa fa-trash-o'></i></span> "+todoText+"</li>");
+    });
+</script>
 
 <% include ../partials/footer %>
