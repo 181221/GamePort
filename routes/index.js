@@ -3,12 +3,12 @@ var router  = express.Router();
 var passport = require("passport");
 var User = require("../models/user");
 
-
-
-
+//Landing siden til gamport.
 router.get("/", function(req, res){
     res.render("landing");
 });
+//Info siden om ranking til spillere. 
+//mulig refaktor til battle routes i fremtiden. 
 router.get("/ranking", function(req, res) {
     User.find({}, function(err, users) {
         if(err){
@@ -20,6 +20,7 @@ router.get("/ranking", function(req, res) {
     });
    
 });
+//instance fra spaceinvaders, singleplayer only. 
 router.get("/:username/games/spaceinvaders", function(req, res) {
     var brukeren = req.params.username;
      User.findOne({"username":brukeren}, function(err, users){
@@ -31,7 +32,7 @@ router.get("/:username/games/spaceinvaders", function(req, res) {
      });
   
  });
-
+// LOGIN 
 router.get("/login", function(req, res){
     res.render("login");
 });
@@ -49,7 +50,7 @@ router.get("/login", function(req, res){
     
 // });
 
-
+// LOGIN 
 router.post("/login",passport.authenticate("local", 
     {
         failureFlash: "Username or password is incorrect.",
@@ -59,11 +60,11 @@ router.post("/login",passport.authenticate("local",
     }), function(req, res){
         res.redirect("/" + req.user.username);
 });
-
+// NY BRUKER 
 router.get("/register", function(req, res){
     res.render("register");
 });
-
+// NY BRUKER 
 router.post("/register", function(req,res){
    var newUser = new User({username: req.body.username});
     
@@ -78,6 +79,7 @@ router.post("/register", function(req,res){
        });
    });
 });
+//LOGOUT
 router.get("/logout", function(req, res){
    req.logout();
    req.flash("success", "Logged you out!"); //alltid før redirect!

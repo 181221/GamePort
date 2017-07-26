@@ -4,7 +4,7 @@ var passport = require("passport");
 var User = require("../models/user");
 var middleware = require("../middleware");
 
-
+// PROFIL RUTE
 router.get("/:username", function(req, res){
      var brukeren = req.params.username;
      User.findOne({"username":brukeren}, function(err, users){
@@ -16,7 +16,7 @@ router.get("/:username", function(req, res){
          }
      });
 });
-
+// EDIT ROUTE 
 router.get("/:username/settings", isLoggedIn, function(req,res){
     var reqbruker = req.params.username; 
     var currentUser = req.user.username; 
@@ -38,6 +38,7 @@ router.get("/:username/settings", isLoggedIn, function(req,res){
         res.redirect("/");
     }
 });
+// UPDATE ROUTE 
 router.put("/:username/settings", isLoggedIn, function(req, res){
     var query = User.findOne({ 'username': req.params.username });
     User.findOneAndUpdate(query, req.body.brukeren, function(err, updatedBruker){
@@ -52,9 +53,11 @@ router.put("/:username/settings", isLoggedIn, function(req, res){
     })
  
 });
+// LANDINGSSIDEN TIL GAMES.
 router.get("/:username/games" ,middleware.isLoggedIn ,function(req, res) {
   res.render("./games/gamesHome");
 });
+
 router.get("/:username/games/spaceinvaders", function(req, res) {
     var brukeren = req.params.username;
     
