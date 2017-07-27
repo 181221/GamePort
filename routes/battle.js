@@ -103,6 +103,20 @@ router.post("/",function(req, res){
          }
      });
 });
+/*
+* Get battleid/playerid, motstander skal spille sin kamp 
+*/
+router.get("/:battle_id/:player_id", function(req, res) {
+    Battle.findById(req.params.battle_id, function(err, battle) {
+       if(err){
+           console.log(err);
+       } else{
+           req.flash("sucess", "battle is about to begin");
+            res.render("Battles/challenge", {battle: battle});
+       }
+    });
+});
+
 /* Updater scoren til spilleren som har utfordret til kamp. 
 *  Oppdaterer utfordringer til spilleren.
 */

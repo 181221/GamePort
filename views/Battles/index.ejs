@@ -48,11 +48,14 @@
     var antall = <%=antallUtfordringer%>;
     var str = "<%=battleId%>".slice(); //får tilbake en strengrepresentasjon av id_ene
     var battles = str.split(","); //lager en tabell
+    var currentUser = "<%= currentUser.id %>"
     console.log(battles[0]);
+    console.log(currentUser)
     //viser utfordrine til spilleren. 
     $("span").on("click", function(event){
             for(var i = 0; i < battles.length; i ++){
-                $("#utfordringene ul").append("<li><span><i class='fa fa-hourglass'></i></span> "+battles[i]+"</li>");
+                var link = "/battle/ '+' 'battles[i]' '+' / '+' 'currentUser.id'";
+                $("#utfordringene ul").append("<li><span><i class='fa fa-hourglass'></i></span><a href="+'battle/'+battles[i]+'/'+currentUser+">"+battles[i]+"</a></li>");
             }
     });
 </script>
