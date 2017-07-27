@@ -58,7 +58,6 @@ function setup() {
   
 }//setup
 function resetSketch() {
-  button.hide();
   level = 0;
   score = 0;
   gameover = false;

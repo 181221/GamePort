@@ -122,6 +122,7 @@ router.get("/:battle_id/:player_id", function(req, res) {
 */
 router.put("/:battle_id/:player_id",function(req,res){
     var battleId = req.params.battle_id;
+    console.log("scoren er " + req.body.score);
     Battle.findById(req.params.battle_id, function(err,battle){
        if(err){
            console.log(err);
