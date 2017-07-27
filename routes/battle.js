@@ -116,6 +116,25 @@ router.get("/:battle_id/:player_id", function(req, res) {
        }
     });
 });
+//hent spiller fra database og oppdater utfordringen 
+function soekSpiller(id, userid){
+    User.findById(userid).populate('utfordringer').where('utfordringer.id').equals(id).exec(function (err, spiller) {
+                if (err){
+                    console.log(err);
+                }else{
+                    console.log("====FRA SPILLER====")
+                    //får en array tilbake med alle utfordringene.. finner ikke ut hvordan jeg får den riktige
+                    //iterer bare gjennom alle å finner riktig derfra.
+                    for(var i = 0; i < spiller.utfordringer.length; i++){
+                        if(spiller.utfordringer[i].id.equals(id)){ //setter til ferdig og saver. 
+                            spiller.utfordringer[i].ferdig = true;
+                            spiller.save();
+                            return;
+                        }
+                    }
+                }
+    });
+};
 
 /* Updater scoren til spilleren som har utfordret til kamp. 
 *  Oppdaterer utfordringer til spilleren.
@@ -140,12 +159,10 @@ router.put("/:battle_id/:player_id",function(req,res){
                    console.log(err);
                }else {
                    //currentspiller skal alltid ligge på plass en fra redirect. 
-                   var nyUtfordring = {
-                     id: battleId,
-                     ferdig: true
-                  };
-                  user.utfordringer.push(nyUtfordring);
-                  console.log(user.utfordringer[0].ferdig);
+                   //må oppdaterer currentspiller sin utfordring
+                  soekSpiller(req.params.battle_id, currentSpiller);
+                  //user.utfordringer.push(nyUtfordring);
+                  //console.log(user.utfordringer[riktigIndex].ferdig);
                   req.flash("success", "battle updated!");
                   res.redirect("/battle/" + currentSpiller);
                }
