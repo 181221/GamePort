@@ -2,16 +2,25 @@
 var mongoose = require("mongoose");
 
 var battleSchema = new mongoose.Schema({
-   spillere: [{
+   utfordrer: {
       id: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
       username: String,
-      score: Number
-   }],
+      score: Number,
+      ferdig: Boolean
+   },
+   motstander: {
+      id: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
+      username: String,
+      score: Number,
+      ferdig: Boolean
+   },
    spill:
        {
            id: {type: mongoose.Schema.Types.ObjectId, ref: "Game"},
-           name: String
+           navn: String,
+           beskrivelse: String
        },
+   tidspunkt: Date
 });
 
 module.exports = mongoose.model("Battle", battleSchema);
