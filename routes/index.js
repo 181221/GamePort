@@ -10,15 +10,11 @@ router.get("/", function(req, res){
 });
 router.get("/ranking", function(req, res) {
 
-    User.find({}).sort({totalscore: -1}).exec(function(err, battle){
+    User.find({}).sort({totalscore: -1}).exec(function(err, users){
        if(err){
            console.log(err.message);
        } else {
-           console.log("=========SCORES=======");
-           for(var i = 0; i < battle.length; i ++){
-               console.log(battle[i].totalscore);
-           }
-           res.send("hei");
+          res.render("./games/ranking", {users: users});
        }
     });
         
