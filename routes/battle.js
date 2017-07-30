@@ -79,6 +79,8 @@ function finnBrukerOgOppdaterTotalScore(userId, score){
        } else {
            var scoren = Number(score);
            user.totalscore += scoren;
+           user.save();
+           console.log(user.totalscore);
            return;
        }
     });

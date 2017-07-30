@@ -10,13 +10,14 @@ router.get("/", function(req, res){
 });
 router.get("/ranking", function(req, res) {
 
-    User.find({}, 'totalscore').sort({totalscore: -1}).exec(function(err, battle){
+    User.find({}).sort({totalscore: -1}).exec(function(err, battle){
        if(err){
            console.log(err.message);
        } else {
            console.log("=========SCORES=======");
-           console.log(battle);
-           console.log(battle[1].totalscore);
+           for(var i = 0; i < battle.length; i ++){
+               console.log(battle[i].totalscore);
+           }
            res.send("hei");
        }
     });
