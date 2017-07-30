@@ -46,7 +46,7 @@ router.get("/history", middle.isLoggedIn, function(req, res) {
                 }else{
                     console.log("===========BATTLES AV CURRENTUSER=============");
                     console.log(battle.length);
-                    res.send("her kommer matchhistorien!");
+                    res.render("Battles/show", {battle:battle})
                 }
     });
 });
