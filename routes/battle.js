@@ -7,7 +7,7 @@ var middle = require("../middleware/index");
 var mongoose = require('mongoose');
 
 /*
-* Battle landing page
+* Battle landing siden
 * Viser landingsiden og om brukeren har fått nye utfordringer!
 */
 router.get("/", middle.isLoggedIn, function(req, res) {
@@ -15,11 +15,9 @@ router.get("/", middle.isLoggedIn, function(req, res) {
    User.findById(currentUser).populate('utfordringer').where('utfordringer.ferdig').equals(false).exec(function (err, user) {
        if(err){
            console.log(err);
-           console.log("ingen utfordringer");
        }else {
            var antall;
            var idArray = [];
-           console.log(user);
            if(user){
                 for(var i = 0; i < user.utfordringer.length; i++){
                     idArray[i] = user.utfordringer[i].id;
@@ -55,15 +53,20 @@ router.get("/history", middle.isLoggedIn, function(req, res) {
 */
 function finnBrukerOgSlettUtfordring(userId, battleId){
     User.findById(userId).populate('utfordringer').where('utfordringer.id').equals(battleId).exec(function(err, user){
-       if(err || user.utfordringer.length > 1){
+       if(err || !user){
            console.log(err);
-       } else {
-           console.log("fra funksjon finnbruker og slett utfordring");
-           console.log(user.utfordringer);
-           user.utfordringer[0].ferdig = true;
-           user.save();
            return;
-           
+       } else {
+           var funnet = false;
+           console.log("fra funksjon finnbruker og slett utfordring");
+           for(var i = 0; i < user.utfordringer.length && !funnet; i++){
+               if(user.utfordringer[i].id.equals(battleId)){ // sletter utfordringen 
+                   user.utfordringer.pull({ _id: user.utfordringer[i]._id }); //funker bare på _id
+                   user.save();
+                   funnet = true;
+               }
+           }
+           return;
        }
     });
 }
