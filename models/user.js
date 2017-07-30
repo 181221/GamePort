@@ -12,6 +12,7 @@ var UserSchema = new mongoose.Schema({
       id: {type: mongoose.Schema.Types.ObjectId, ref: "Battle"},
       ferdig: {type: Boolean, default: false}
    }],
+   totalscore: {type: Number, default: 0},
    isAdmin: {
       type: Boolean,
       default: false

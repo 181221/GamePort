@@ -2,24 +2,41 @@ var express = require("express");
 var router  = express.Router();
 var passport = require("passport");
 var User = require("../models/user");
+var Battle = require("../models/battle");
 
 //Landing siden til gamport.
 router.get("/", function(req, res){
     res.render("landing");
 });
+router.get("/ranking", function(req, res) {
+
+    User.find({}, 'totalscore').sort({totalscore: -1}).exec(function(err, battle){
+       if(err){
+           console.log(err.message);
+       } else {
+           console.log("=========SCORES=======");
+           console.log(battle);
+           console.log(battle[1].totalscore);
+           res.send("hei");
+       }
+    });
+        
+    
+});
+
 //Info siden om ranking til spillere. 
 //mulig refaktor til battle routes i fremtiden. 
-router.get("/ranking", function(req, res) {
-    User.find({}, function(err, users) {
-        if(err){
-            req.flash("error", err);
-            res.redirect("back");
-        } else {
-            res.render("./games/ranking", {users: users});
-        }
-    });
+// router.get("/ranking", function(req, res) {
+//     User.find({}, function(err, users) {
+//         if(err){
+//             req.flash("error", err);
+//             res.redirect("back");
+//         } else {
+//             res.render("./games/ranking", {users: users});
+//         }
+//     });
    
-});
+// });
 //instance fra spaceinvaders, singleplayer only. 
 router.get("/:username/games/spaceinvaders", function(req, res) {
     var brukeren = req.params.username;

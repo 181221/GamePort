@@ -69,6 +69,20 @@ function finnBrukerOgSlettUtfordring(userId, battleId){
        }
     });
 }
+/*
+* Finn brukeren og oppdater totalscoren.
+*/
+function finnBrukerOgOppdaterTotalScore(userId, score){
+    User.findById(userId, function(err, user) {
+       if(err){
+           console.log(err);
+       } else {
+           var scoren = Number(score);
+           user.totalscore += scoren;
+           return;
+       }
+    });
+};
 
 /*
 * Ny utfordring
@@ -84,7 +98,6 @@ function lagNyUtfordring(userId, battleId){
             }
             user.utfordringer.push(nyUtfordring)
             user.save();
-            console.log(user);
             return;
        }
     });
@@ -173,10 +186,13 @@ router.put("/:battle_id/:player_id",function(req,res){
                console.log("utfordrer er ferdig!")
                battle.utfordrer.ferdig = true;
                battle.utfordrer.score = req.body.score;
+               finnBrukerOgOppdaterTotalScore(currentSpiller, req.body.score);
            }else {
                console.log("motstander e ferdig!")
                battle.motstander.ferdig = true;
                battle.motstander.score = req.body.score;
+               console.log(battle.motstander.id)
+               finnBrukerOgOppdaterTotalScore(battle.motstander.id, req.body.score);
            }
            finnBrukerOgSlettUtfordring(currentSpiller,req.params.battle_id);
            battle.save(); //lagrer battle
