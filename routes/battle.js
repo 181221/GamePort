@@ -10,27 +10,14 @@ var mongoose = require('mongoose');
 router.get("/", middle.isLoggedIn, function(req, res) {
     var currentUser = res.locals.currentUser;
     console.log("current userid er " + currentUser.id);
-    Battle.find({}).populate({
-             path: 'utfordrer motstander',
-             }).where('utfordrer.id').equals(currentUser.id).exec(function (err, battle) {
+   // {$or:[ {'username': u.username}, {'email': u.email}]}
+    Battle.find({$or:[ {'utfordrer.id': currentUser}, {'motstander.id': currentUser}]}).exec(function (err, battle) {
                 if (err){
                     console.log(err);
                 }else{
                     console.log("===========UTFORDRINGER");
-                    var utfordringBattleId = [];
-                    console.log(battle[0]);
-                    console.log(battle[0].utfordrer);
-                    console.log(battle[0].motstander);
-                    for(var i = 0; i < battle.length;i++){
-                        if(!battle[i].ferdig){
-                            utfordringBattleId.push(battle[i].id);
-                            console.log(battle[i].id);
-                        }
-                    }
-                    console.log("===========UTFORDRINGER");
-                    var antall = utfordringBattleId.length;
-                    console.log(antall);
-                    res.render("Battles/index", {antallUtfordringer: antall, battleId: utfordringBattleId});
+                    console.log(battle.length);
+                    res.render("Battles/index", {antallUtfordringer: battle.length, battleId: battle});
                 }
     });
 });
@@ -72,8 +59,8 @@ router.post("/",function(req, res){
         ferdig: true
     };
     
-    //lager spørring må utføre alt inne spørringen, for å oppdaterer motstander id
-    //spørring returnerer undefined..
+    //lager spørring, må utføre alt inne spørringen, for å oppdaterer motstander id
+    //spørring returnerer undefined.. derfor kan jeg ikke gjøre dette i en funksjon. 
     var query =  finnSpillerPaaUsername(req.body.motstander);
         query.exec(function(err,bruker){
      if(err){
@@ -125,8 +112,6 @@ router.get("/:battle_id/:player_id", function(req, res) {
 //hent spiller fra database og oppdater utfordringen 
 function soekSpiller(battleid, userid){
     User.findById(userid).populate('utfordringer').where('utfordringer.id').equals(battleid).exec(function (err, spiller) {
-    
-        
     });
 };
 
