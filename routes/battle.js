@@ -6,11 +6,12 @@ var Spill = require("../models/spill");
 var middle = require("../middleware/index");
 var mongoose = require('mongoose');
 
-//Battle landing page. 
+/*
+* Battle landing page.
+* Return alle battler brukeren har spillt. 
+*/ 
 router.get("/", middle.isLoggedIn, function(req, res) {
     var currentUser = res.locals.currentUser;
-    console.log("current userid er " + currentUser.id);
-   // {$or:[ {'username': u.username}, {'email': u.email}]}
     Battle.find({$or:[ {'utfordrer.id': currentUser}, {'motstander.id': currentUser}]}).exec(function (err, battle) {
                 if (err){
                     console.log(err);
@@ -82,20 +83,21 @@ router.post("/",function(req, res){
                 console.log(err);
             } else {
                 //redirect back to campgrounds page
+                lagNyUtfordring(battle.utfordrer.id, battle._id);
+                lagNyUtfordring(battle.motstander.id, battle._id);
                 console.log("===========BATTLE============")
                 console.log(battle);
                 console.log("===========BATTLE=============")
-                lagNyUtfordring(battle.utfordrer.id, battle._id);
-                lagNyUtfordring(battle.motstander.id, battle._id);
                 req.flash("success", "Ny Battle er Opprettet!");
                 res.render("Battles/challenge", {battle: battle});
             }
         });
-      }//else querry
-    }); //querry
+      } //else query
+    }); //query
 });
+
 /*
-* Get battleid/playerid, motstander skal spille sin kamp 
+* Get battle_Id/player_Id. Etter at motstander har fått utfordring skal brukeren bli redirected ut hvor han skal spille 
 * 
 */
 router.get("/:battle_id/:player_id", function(req, res) {
@@ -109,21 +111,12 @@ router.get("/:battle_id/:player_id", function(req, res) {
     });
 });
 
-//hent spiller fra database og oppdater utfordringen 
-function soekSpiller(battleid, userid){
-    User.findById(userid).populate('utfordringer').where('utfordringer.id').equals(battleid).exec(function (err, spiller) {
-    });
-};
-
 /* Updater scoren til spilleren som har utfordret til kamp. 
 *  Oppdaterer utfordringer til spilleren.
 *  Utfordrer kommer til denne ruten etter utfordrer har lagd ny battle og spillt den.
 */
 router.put("/:battle_id/:player_id",function(req,res){
-    var battleId = req.params.battle_id;
-    console.log("scoren er " + req.body.score);
     var currentSpiller = req.params.player_id;
-    
     Battle.findById(req.params.battle_id, function(err,battle){
        if(err){
            console.log(err);
@@ -147,19 +140,6 @@ router.get("/new",middle.isLoggedIn, function(req,res){
     res.render("Battles/new");
 });
 
-// router.get("/:player_id",function(req, res){
-//     var currentUser = req.params.player_id;
-//         Battle.find({}).populate({
-//              path: 'utfordrer motstander',
-//              }).where('utfordrer.id').equals(currentUser).$or('motstander.id').equals(currentUser).exec(function (err, battle) {
-//                 if (err){
-//                     console.log(err);
-//                 }
-//                 else {
-//                     console.log(battle);
-//                 }
-//         });
-// });
 /*
 * Brukeren sin show route. 
 * henter alle spill som spilleren har spilt. Spilleren skal få full oversikt over kampene sine.
