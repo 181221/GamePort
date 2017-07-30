@@ -11,16 +11,16 @@ router.get("/", middle.isLoggedIn, function(req, res) {
     var currentUser = res.locals.currentUser;
     console.log("current userid er " + currentUser.id);
     Battle.find({}).populate({
-             path: 'spillere',
-             }).where('spillere.id').equals(currentUser.id).exec(function (err, battle) {
+             path: 'utfordrer motstander',
+             }).where('utfordrer.id').equals(currentUser.id).exec(function (err, battle) {
                 if (err){
                     console.log(err);
                 }else{
                     console.log("===========UTFORDRINGER");
                     var utfordringBattleId = [];
                     console.log(battle[0]);
-                    console.log(battle[0].spillere[0]);
-                    console.log(battle[0].spillere[1]);
+                    console.log(battle[0].utfordrer);
+                    console.log(battle[0].motstander);
                     for(var i = 0; i < battle.length;i++){
                         if(!battle[i].ferdig){
                             utfordringBattleId.push(battle[i].id);
@@ -33,28 +33,6 @@ router.get("/", middle.isLoggedIn, function(req, res) {
                     res.render("Battles/index", {antallUtfordringer: antall, battleId: utfordringBattleId});
                 }
     });
-    
-    
-    // User.findById(currentUser.id).populate("utfordringer").exec(function (err, user) {
-    //             if (err){
-    //                 console.log(err);
-    //             }else{
-    //                 console.log("===========UTFORDRINGER");
-    //                 var utfordringBattleId = [];
-    //                 var spiller = user.utfordringer;
-    //                 for(var i = 0; i < spiller.length;i++){
-    //                     if(!spiller[i].ferdig){
-    //                         utfordringBattleId.push(spiller[i].id);
-    //                         console.log(spiller[i].id);
-    //                     }
-    //                 }
-    //                 console.log("===========UTFORDRINGER");
-    //                 var antall = utfordringBattleId.length;
-    //                 console.log(antall);
-                    
-    //                 res.render("Battles/index", {antallUtfordringer: antall, battleId: utfordringBattleId} );
-    //             }
-    // });
 });
 
 /*
@@ -166,8 +144,10 @@ router.put("/:battle_id/:player_id",function(req,res){
            var currentSpiller = req.params.player_id;
            if(currentSpiller === battle.utfordrer.id){
                battle.utfordrer.ferdig = true;
+               battle.utfordrer.score = req.body.score;
            }else {
                battle.motstander.ferdig = true;
+               battle.utfordrer.score = req.body.score;
            }
            battle.save(); //lagrer battle
            req.flash("success", "battle updated!");
@@ -181,6 +161,20 @@ router.put("/:battle_id/:player_id",function(req,res){
 router.get("/new",middle.isLoggedIn, function(req,res){
     res.render("Battles/new");
 });
+
+// router.get("/:player_id",function(req, res){
+//     var currentUser = req.params.player_id;
+//         Battle.find({}).populate({
+//              path: 'utfordrer motstander',
+//              }).where('utfordrer.id').equals(currentUser).$or('motstander.id').equals(currentUser).exec(function (err, battle) {
+//                 if (err){
+//                     console.log(err);
+//                 }
+//                 else {
+//                     console.log(battle);
+//                 }
+//         });
+// });
 /*
 * Brukeren sin show route. 
 * henter alle spill som spilleren har spilt. Spilleren skal få full oversikt over kampene sine.
@@ -188,16 +182,15 @@ router.get("/new",middle.isLoggedIn, function(req,res){
 * 
 */
 router.get("/:player_id",function(req, res){
-        Battle.find({}).populate({
-             path: 'spillere',
-             }).where('spillere.id').equals(req.params.player_id).exec(function (err, battle) {
+    var currentUser = req.params.player_id;
+        Battle.find({}).where('utfordrer.id').equals(currentUser).exec(function (err, battle) {
                 if (err){
                     console.log(err);
                 }else{
+                    console.log(battle);
                     res.render("Battles/show", {battle:battle});
                 }
     });
 });
-
 
 module.exports = router; //exportert slik at den kan brukes i app.js

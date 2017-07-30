@@ -18,18 +18,18 @@
   <tbody>
     <% for(var i = 0; i < battle.length; i ++){ %>
     <tr>
-      <% for(var k = 0; k < battle[i].spillere.length-1; k++){%>
-      <% var challengerScore = battle[i].spillere[k].score;%>
-      <% var opponentScore = battle[i].spillere[k+1].score;%>
-      <td><span><a href="#"> <%= i %> </a></span><%=": " + battle[i].spill.name  %></td>
-      <td><%= battle[i].spillere[k].username; %></td>
-      <td><%= battle[i].spillere[k+1].username; %></td>
+      <% var challengerScore = battle[i].utfordrer.score;%>
+      <% var opponentScore = battle[i].motstander.score;%>
+      <td><span><a href="#"> <%= i %> </a></span><%= ": " + battle[i].spill.navn  %></td>
+      <td><%= battle[i].utfordrer.username; %></td>
+      <td><%= battle[i].motstander.username; %></td>
       <td class="right aligned"><%= challengerScore %></td>
       <td class="right aligned"><%= opponentScore %></td>
+      <% } %>
     </tr>
-    <% } %> 
+    
   </tbody>
-  <% } %>
+  
 </table>
 <table class="ui inverted table">
   <thead>
