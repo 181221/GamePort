@@ -58,7 +58,6 @@ function finnBrukerOgSlettUtfordring(userId, battleId){
            return;
        } else {
            var funnet = false;
-           console.log("fra funksjon finnbruker og slett utfordring");
            for(var i = 0; i < user.utfordringer.length && !funnet; i++){
                if(user.utfordringer[i].id.equals(battleId)){ // sletter utfordringen 
                    user.utfordringer.pull({ _id: user.utfordringer[i]._id }); //funker bare på _id
@@ -146,8 +145,7 @@ router.post("/",function(req, res){
 });
 
 /*
-* Get battle_Id/player_Id. Etter at motstander har fått utfordring skal brukeren bli redirected ut hvor han skal spille 
-* 
+* Get battle_Id/player_Id. Etter at motstander har fått utfordring skal brukeren bli redirected ut hvor han skal spille.
 */
 router.get("/:battle_id/:player_id", function(req, res) {
     Battle.findById(req.params.battle_id, function(err, battle) {
@@ -160,7 +158,8 @@ router.get("/:battle_id/:player_id", function(req, res) {
     });
 });
 
-/* Updater scoren til spilleren som har utfordret til kamp. 
+/* 
+*  Updater scoren til spilleren som har utfordret til kamp. 
 *  Oppdaterer utfordringer til spilleren.
 *  Utfordrer kommer til denne ruten etter utfordrer har lagd ny battle og spillt den.
 */
