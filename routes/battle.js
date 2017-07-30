@@ -44,6 +44,23 @@ router.get("/history", middle.isLoggedIn, function(req, res) {
                 }
     });
 });
+/*
+* Slett utfordring
+*/
+function finnBrukerOgSlettUtfordring(userId, battleId){
+    User.findById(userId).populate('utfordringer').where('utfordringer.id').equals(battleId).exec(function(err, user){
+       if(err || user.utfordringer.length > 1){
+           console.log(err);
+       } else {
+           console.log("fra funksjon finnbruker og slett utfordring");
+           console.log(user.utfordringer);
+           user.utfordringer[0].ferdig = true;
+           user.save();
+           return;
+           
+       }
+    });
+}
 
 /*
 * Ny utfordring
@@ -148,17 +165,12 @@ router.put("/:battle_id/:player_id",function(req,res){
                console.log("utfordrer er ferdig!")
                battle.utfordrer.ferdig = true;
                battle.utfordrer.score = req.body.score;
-               battle.save(); //lagrer battle
-                console.log("==================UTFORDRER=================");
-               console.log(battle.utfordrer)
            }else {
                console.log("motstander e ferdig!")
                battle.motstander.ferdig = true;
                battle.motstander.score = req.body.score;
-               battle.save(); //lagrer battle
-               console.log("==================MOTSTANDER=================");
-               console.log(battle.motstander)
            }
+           finnBrukerOgSlettUtfordring(currentSpiller,req.params.battle_id);
            battle.save(); //lagrer battle
            req.flash("success", "battle updated!");
            res.redirect("/battle/" + currentSpiller);
