@@ -145,11 +145,19 @@ router.put("/:battle_id/:player_id",function(req,res){
            console.log(err);
        }else{
             if(battle.utfordrer.id.equals(currentSpiller)){
+               console.log("utfordrer er ferdig!")
                battle.utfordrer.ferdig = true;
                battle.utfordrer.score = req.body.score;
+               battle.save(); //lagrer battle
+                console.log("==================UTFORDRER=================");
+               console.log(battle.utfordrer)
            }else {
+               console.log("motstander e ferdig!")
                battle.motstander.ferdig = true;
-               battle.utfordrer.score = req.body.score;
+               battle.motstander.score = req.body.score;
+               battle.save(); //lagrer battle
+               console.log("==================MOTSTANDER=================");
+               console.log(battle.motstander)
            }
            battle.save(); //lagrer battle
            req.flash("success", "battle updated!");
@@ -170,7 +178,7 @@ router.get("/new",middle.isLoggedIn, function(req,res){
 */
 router.get("/:player_id",function(req, res){
     var currentUser = req.params.player_id;
-        Battle.find({}).where('utfordrer.id').equals(currentUser).exec(function (err, battle) {
+        Battle.find({$or:[ {'utfordrer.id': currentUser}, {'motstander.id': currentUser}]}).exec(function (err, battle) {
                 if (err){
                     console.log(err);
                 }else{

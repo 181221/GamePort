@@ -47,7 +47,8 @@
 <script type="text/javascript">
     var str = "<%=idArray%>";
     var tab = str.split(",");
-    var currentUser = currentUser;
+    var currentUser = "<%=currentUser.id%>";
+    console.log(currentUser);
     //viser utfordrine til spilleren. 
     $("span").on("click", function(event){
             for(var i = 0; i < tab.length; i ++){
