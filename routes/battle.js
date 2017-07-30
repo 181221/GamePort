@@ -16,8 +16,14 @@ router.get("/", middle.isLoggedIn, function(req, res) {
        if(err){
            console.log(err);
        }else {
+           console.log(user);
            console.log(user.utfordringer.length);
-           //res.render("Battles/index", {antallUtfordringer: utfordringer.length, utfordringer: utfordringer});
+           var idArray = [];
+           for(var i = 0; i < user.utfordringer.length; i++){
+               idArray[i] = user.utfordringer[i].id;
+           }
+           console.log(idArray);
+           res.render("Battles/index", {antallUtfordringer: user.utfordringer.length, utfordringer: user.utfordringer, idArray: idArray});
        }
    });
 });

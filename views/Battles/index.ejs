@@ -45,17 +45,13 @@
 
 
 <script type="text/javascript">
-    var antall = <%=antallUtfordringer%>;
-    var str = "<%=utfordringer%>".slice(); //får tilbake en strengrepresentasjon av id_ene
-    var battles = str.split(","); //lager en tabell
-    var currentUser = "<%= currentUser.id %>"
-    console.log(battles[0]);
-    console.log(currentUser)
+    var str = "<%=idArray%>";
+    var tab = str.split(",");
+    var currentUser = currentUser;
     //viser utfordrine til spilleren. 
     $("span").on("click", function(event){
-            for(var i = 0; i < battles.length; i ++){
-                var link = "/battle/ '+' 'battles[i]' '+' / '+' 'currentUser.id'";
-                $("#utfordringene ul").append("<li><span><i class='fa fa-hourglass'></i></span><a href="+'battle/'+battles[i]+'/'+currentUser+">"+battles[i]+"</a></li>");
+            for(var i = 0; i < tab.length; i ++){
+                $("#utfordringene ul").append("<li><span><i class='fa fa-hourglass'></i></span><a href="+'battle/'+tab[i]+'/'+currentUser+">"+tab[i]+"</a></li>");
             }
     });
 </script>
