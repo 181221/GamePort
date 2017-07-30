@@ -15,15 +15,21 @@ router.get("/", middle.isLoggedIn, function(req, res) {
    User.findById(currentUser).populate('utfordringer').where('utfordringer.ferdig').equals(false).exec(function (err, user) {
        if(err){
            console.log(err);
+           console.log("ingen utfordringer");
        }else {
-           console.log(user);
-           console.log(user.utfordringer.length);
+           var antall;
            var idArray = [];
-           for(var i = 0; i < user.utfordringer.length; i++){
-               idArray[i] = user.utfordringer[i].id;
+           console.log(user);
+           if(user){
+                for(var i = 0; i < user.utfordringer.length; i++){
+                    idArray[i] = user.utfordringer[i].id;
+                }
+                antall = idArray.length;
+           }else {
+               antall = 0;
            }
-           console.log(idArray);
-           res.render("Battles/index", {antallUtfordringer: user.utfordringer.length, utfordringer: user.utfordringer, idArray: idArray});
+           res.render("Battles/index", {antallUtfordringer: antall, utfordringer: user, idArray: idArray});
+           
        }
    });
 });

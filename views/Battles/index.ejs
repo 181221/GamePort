@@ -5,7 +5,7 @@
     <h1 class>landing page til battle arena!</h1>
     <div class ="ui grid">
         <div class="twelve wide column">
-            <%if(antallUtfordringer > 0){%>
+            <%if(antallUtfordringer){%>
             <p><a href="#"><span id="nyeUtfordringer"><%= antallUtfordringer %> Nye Utfordringer!!</span></a></p>
             <% }%>
             <div id ="utfordringene">
@@ -48,7 +48,6 @@
     var str = "<%=idArray%>";
     var tab = str.split(",");
     var currentUser = "<%=currentUser.id%>";
-    console.log(currentUser);
     //viser utfordrine til spilleren. 
     $("span").on("click", function(event){
             for(var i = 0; i < tab.length; i ++){
