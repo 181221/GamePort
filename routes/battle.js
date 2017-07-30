@@ -137,12 +137,13 @@ function soekSpiller(battleid, userid){
 router.put("/:battle_id/:player_id",function(req,res){
     var battleId = req.params.battle_id;
     console.log("scoren er " + req.body.score);
+    var currentSpiller = req.params.player_id;
+    
     Battle.findById(req.params.battle_id, function(err,battle){
        if(err){
            console.log(err);
        }else{
-           var currentSpiller = req.params.player_id;
-           if(currentSpiller === battle.utfordrer.id){
+            if(battle.utfordrer.id.equals(currentSpiller)){
                battle.utfordrer.ferdig = true;
                battle.utfordrer.score = req.body.score;
            }else {
@@ -152,7 +153,6 @@ router.put("/:battle_id/:player_id",function(req,res){
            battle.save(); //lagrer battle
            req.flash("success", "battle updated!");
            res.redirect("/battle/" + currentSpiller);
-          
        }
    }) 
 });
@@ -179,7 +179,6 @@ router.get("/new",middle.isLoggedIn, function(req,res){
 * Brukeren sin show route. 
 * henter alle spill som spilleren har spilt. Spilleren skal få full oversikt over kampene sine.
 * Uspilte kamper skal kunne bli spilt herfra.
-* 
 */
 router.get("/:player_id",function(req, res){
     var currentUser = req.params.player_id;
