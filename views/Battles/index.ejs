@@ -46,7 +46,7 @@
 
 <script type="text/javascript">
     var antall = <%=antallUtfordringer%>;
-    var str = "<%=battleId%>".slice(); //får tilbake en strengrepresentasjon av id_ene
+    var str = "<%=utfordringer%>".slice(); //får tilbake en strengrepresentasjon av id_ene
     var battles = str.split(","); //lager en tabell
     var currentUser = "<%= currentUser.id %>"
     console.log(battles[0]);

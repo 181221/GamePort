@@ -12,12 +12,12 @@ var mongoose = require('mongoose');
 */
 router.get("/", middle.isLoggedIn, function(req, res) {
    var currentUser = res.locals.currentUser;
-   User.findById(currentUser).populate('utfordringer').where('utfordringer.ferdig').equals(false).exec(function (err, utfordringer) {
+   User.findById(currentUser).populate('utfordringer').where('utfordringer.ferdig').equals(false).exec(function (err, user) {
        if(err){
            console.log(err);
        }else {
-           console.log(utfordringer);
-           //res.render("Battles/index", {antallUtfordringer: battle.length, battleId: battle});
+           console.log(user.utfordringer.length);
+           //res.render("Battles/index", {antallUtfordringer: utfordringer.length, utfordringer: utfordringer});
        }
    });
 });
