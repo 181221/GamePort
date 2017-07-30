@@ -7,18 +7,34 @@ var middle = require("../middleware/index");
 var mongoose = require('mongoose');
 
 /*
-* Battle landing page.
+* Battle landing page
+* Viser landingsiden og om brukeren har fått nye utfordringer!
+*/
+router.get("/", middle.isLoggedIn, function(req, res) {
+   var currentUser = res.locals.currentUser;
+   User.findById(currentUser).populate('utfordringer').where('utfordringer.ferdig').equals(false).exec(function (err, utfordringer) {
+       if(err){
+           console.log(err);
+       }else {
+           console.log(utfordringer);
+           //res.render("Battles/index", {antallUtfordringer: battle.length, battleId: battle});
+       }
+   });
+});
+
+/*
+* Battle user history page.
 * Return alle battler brukeren har spillt. 
 */ 
-router.get("/", middle.isLoggedIn, function(req, res) {
+router.get("/history", middle.isLoggedIn, function(req, res) {
     var currentUser = res.locals.currentUser;
     Battle.find({$or:[ {'utfordrer.id': currentUser}, {'motstander.id': currentUser}]}).exec(function (err, battle) {
                 if (err){
                     console.log(err);
                 }else{
-                    console.log("===========UTFORDRINGER");
+                    console.log("===========BATTLES AV CURRENTUSER=============");
                     console.log(battle.length);
-                    res.render("Battles/index", {antallUtfordringer: battle.length, battleId: battle});
+                    res.send("her kommer matchhistorien!");
                 }
     });
 });
@@ -51,7 +67,8 @@ function finnSpillerPaaUsername(username){
 /*
 * Oppretter ny battle mellom utfordrer og motspiller. Sender spilleren til arena.
 * Pusher en utfordring til motstanderen. 
-* Mye som consolelog som må fjernes. 
+* Mongoose returnerer ikke objecter fra en funksjon, så alt må gjøres på denne ruten. 
+* Til fremtidig utvikling av siden må jeg refactor dette her!
 */
 router.post("/",function(req, res){
     var utfordrer = {
