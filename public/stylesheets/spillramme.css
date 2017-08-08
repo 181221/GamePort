@@ -11,3 +11,35 @@ p#scoren {
     text-align: center;
     position: relative;
 }
+
+table thead tr th {
+    width: 95%;
+}
+#justert {
+    margin-top: 20px;
+}
+
+#justert > thead > tr > th:nth-child(1){
+    width: 20%;
+}
+#justert > thead > tr > th:nth-child(2){
+    color: #48c3ff;
+    width: 12%;
+}
+#justert > thead > tr > th:nth-child(3) {
+    color: #48c3ff;
+    width: 25%;
+}
+#justert > thead > tr > th:nth-child(4){
+    width: 12%;
+    color: #ecd004;
+}
+#justert > thead > tr > th:nth-child(5) {
+    color: #ecd004;
+}
+#justert > thead {
+    font-size:1.4em;
+}
+#justert > tbody {
+    font-size: 1.2em;
+}

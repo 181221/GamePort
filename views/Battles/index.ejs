@@ -2,7 +2,7 @@
 
 
 <div class="ui container">
-    <h1 class>landing page til battle arena!</h1>
+    <h1 class="first-section arena">Welcome to Battle Arena!</h1>
     <div class ="ui grid">
         <div class="twelve wide column">
             <%if(antallUtfordringer){%>
@@ -19,23 +19,37 @@
             <p></p>
         </div>
     </div>
-    <div class="ui three column grid">
-  <div class="column">
+    
+<div class="ui three column grid">
+  <div class="column content-container" >
+      <div class="ui segment">
+          <section class="section-first">
+              <p class="challenge-text"><a href="battle/new">Challenge a Player!</a></p>
+              <img src="http://vignette3.wikia.nocookie.net/wartune/images/6/69/Arena_Battle_Background.jpeg/revision/latest?cb=20140611222320" id="section-challenge">
+              <i id="icon-left" class="fa fa-gamepad fa-5x" aria-hidden="true"></i>
+              <i id="icon-right" class="fa fa-gamepad fa-5x" aria-hidden="true"></i>
+           </section>
+       </div>
+      
+    </div>
+  <div class="column content-container">
     <div class="ui segment">
-        <p><a href="battle/new">Challenge a player to a battle!!</a></p>
-      <i class="fa fa-gamepad fa-5x" aria-hidden="true"></i>
+        <section class="section-first" style="padding-bottom: 48px;">
+            <p class="challenge-text"><a href="battle/history">Show match history!</a></p>
+             <div>
+                 <img src="http://2.bp.blogspot.com/-7ClRJ5MG1t4/VqdjkmBs0-I/AAAAAAAAE24/iRKMUE5BLIM/s640/StelfoxMikeTiltshiftAbstract2.jpg">
+             </div>
+        </section>
     </div>
   </div>
-  <div class="column">
+  <div class="column content-container">
     <div class="ui segment">
-        <p><a href="battle/history">Show match history!</a></p>
-      <img>
-    </div>
-  </div>
-  <div class="column">
-    <div class="ui segment">
-        <p><a href="/ranking">Ranking!</a></p>
-      <img>
+        <section class="section-first" style="padding-bottom: 48px;">
+            <p class="challenge-text"><a href="/ranking">Ranking!</a></p>
+            <div>
+                 <img src="https://s-media-cache-ak0.pinimg.com/originals/fd/46/a1/fd46a1497479833914247b0c37314d44.jpg">
+             </div>
+        </section>
     </div>
   </div>
 </div>

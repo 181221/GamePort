@@ -33,7 +33,11 @@
                  <script type="text/javascript">
                      function submitScore(){
                          var score = document.querySelector("#scoren").firstChild.innerHTML;
-                         document.querySelector("#finalScore").value = score;
+                         if(score){
+                             document.querySelector("#finalScore").value = score;
+                         }else {
+                             document.querySelector("#finalScore").value = 0;
+                         }
                      }
                  </script>
          </div>

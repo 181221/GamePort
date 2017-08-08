@@ -1,9 +1,4 @@
 
-.senter {
-    display: block;
-    margin: auto;
-    width: 40%;
-}
 
 .profilBilder {
     margin: 20px 250px;
@@ -20,5 +15,8 @@
         color: white;
 }
 
+.first-section {
+    margin-top: 20%;
+}
 
 

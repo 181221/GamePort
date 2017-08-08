@@ -2,16 +2,19 @@
 <html>
 <head>
 	<title>GamePort!</title>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css">
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.11/p5.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.11/addons/p5.dom.min.js"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	
+	<link rel="title icon" type="image/png" href="./images/icon.JPG"/>
 	<link rel="stylesheet" href="/stylesheets/profilheader.css">
 	<link rel="stylesheet" href="/stylesheets/spillramme.css">
 	<link rel="stylesheet" href="/stylesheets/challenge.css">
-	
+	<link rel="stylesheet" href="/stylesheets/gameNav.css">
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
 <nav class="navbar navbar-default">
@@ -61,17 +64,23 @@
     <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <%if(currentUser){%>
-  <div class="head">
-  <ul class="nav nav-tabs senter">
-    <li><a class="active" href="/">Home</a></li>
-    <li role="presentation"><a href="/<%= currentUser.username %>">Profile</a></li>
-    <li role="presentation"><a href="/<%= currentUser.username %>/settings">Settings</a></li>
-    <li role="presentation"><a href="/ranking">Ranking</a></li>
-    <li role="presentation"><a href="/<%= currentUser.username %>/games">Games!</a></li>
-    <li role="presentation"><a href="/battle">Battle Arena!</a></li>
-  </ul>
+
+<div class="container">
+     <div class="head">
+      <ul class="nav nav-tabs senter profil-ul">
+        <div><a href="" id="menu-icon"></a></div>
+        
+        <li class="profil-li"><a class="active profil-li" href="/">Home</a></li>
+        <li role="presentation" class="profil-li"><a class="profil-a" href="/<%= currentUser.username %>">Profile</a></li>
+        <li role="presentation" class="profil-li"><a class="profil-a" href="/<%= currentUser.username %>/settings">Settings</a></li>
+        <li role="presentation" class="profil-li"><a class="profil-a" href="/ranking">Ranking</a></li>
+        <li role="presentation" class="profil-li"><a class="profil-a" href="/<%= currentUser.username %>/games">Games!</a></li>
+        <li role="presentation" class="profil-li"><a class="profil-a" href="/battle">Battle Arena!</a></li>
+      </ul>
+    </div>
+    <% }%>
 </div>
-<% }%>
+ 
 
 
 <body>

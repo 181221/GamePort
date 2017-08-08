@@ -1,7 +1,7 @@
 
 //SETUP FOR GITHUB 
-git@github.com:brukernavn/repository.git
-git remote add origin <repository url>
+
+git remote add origin <git@github.com:brukernavn/repository.git>
 git pull origin master --allow-unrelated-histories
 git merge origin origin/master
 ... add and commit here...
