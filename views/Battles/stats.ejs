@@ -1,0 +1,44 @@
+<% include ../partials/header %>
+
+<div class="ui container">
+    
+    <h3 id="beskrivelse"><%= battle.spill.beskrivelse %></h3>
+    <table class="ui selectable inverted table" id="justert">
+        <thead>
+            <tr>
+                <th>Game</th>
+                <th>Challenger</th>
+                <th>Score</th>
+                <th>Oppenent</th>
+                <th>Score</th>
+                <th>Winner</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% var utfordrer = battle.utfordrer%>
+            <% var motstander = battle.motstander%>
+            <% var vinner; %>
+            <td><%= battle.spill.navn%> </td>
+                  <td><%= utfordrer.username %></td>
+                  <td><%= utfordrer.score%></td>
+                  <td><%= motstander.username %></td>
+                  <td><%= motstander.score %></td>
+                  <% if(utfordrer.score && motstander.score){ %>
+                      <% if(utfordrer.score > motstander.score) {%>
+                          <%vinner = utfordrer.username%>
+                      <% } else if (utfordrer.score === motstander.score) {%>
+                          <%vinner = "Uavgjort";%>
+                      <% } else { %>
+                          <%vinner = motstander.username%>
+                      <% } %>
+                  <% } else { %>
+                      <% vinner = "venter på vinner"%>
+                  <% } %>
+                  <td><%= vinner %></td>
+        </tbody>
+    </table>
+    
+</div>
+
+
+<% include ../partials/footer %>

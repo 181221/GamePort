@@ -16,6 +16,7 @@ router.get("/", middle.isLoggedIn, function(req, res) {
        if(err){
            console.log(err);
            req.flash("error", err.message);
+           res.redirect("back");
        }else {
            var antall;
            var idArray = [];
@@ -170,23 +171,21 @@ router.put("/:battle_id/:player_id",function(req,res){
            finnBrukerOgSlettUtfordring(currentSpiller,req.params.battle_id);
            battle.save(); //lagrer battle
            req.flash("success", "battle updated!");
-           res.redirect("/battle/user/" + currentSpiller);
+           res.redirect("/battle/"+ req.params.battle_id +"/user/" + battle.utfordrer.username + "/vs/" + battle.motstander.username);
        }
    }) 
 });
 
-
-
-
-router.get("/:battle_id/stats", function(req, res) {
+router.get("/:battle_id/user/:username/vs/:username", function(req, res) {
    Battle.findById(req.params.battle_id, function(err, battle) {
        if(err){
            console.log(err.message);
            req.flash("error", err.message);
        }else {
+           console.log("========");
+           console.log(battle);
            req.flash("success", "Battle Complete!");
-           console.log(battle.utfordrer);
-           res.send("her kommer stats etter kampen");
+           res.render("Battles/stats", {battle:battle});
        }
    }) 
 });
