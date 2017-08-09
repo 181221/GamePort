@@ -15,6 +15,7 @@ router.get("/", middle.isLoggedIn, function(req, res) {
    User.findById(currentUser).populate('utfordringer').where('utfordringer.ferdig').equals(false).exec(function (err, user) {
        if(err){
            console.log(err);
+           req.flash("error", err.message);
        }else {
            var antall;
            var idArray = [];
@@ -31,84 +32,6 @@ router.get("/", middle.isLoggedIn, function(req, res) {
        }
    });
 });
-
-/*
-* Battle user history page.
-* Return alle battler brukeren har spillt. 
-*/ 
-router.get("/history", middle.isLoggedIn, function(req, res) {
-    var currentUser = res.locals.currentUser;
-    Battle.find({$or:[ {'utfordrer.id': currentUser}, {'motstander.id': currentUser}]}).exec(function (err, battle) {
-                if (err){
-                    console.log(err);
-                }else{
-                    console.log("===========BATTLES AV CURRENTUSER=============");
-                    console.log(battle.length);
-                    res.render("Battles/show", {battle:battle})
-                }
-    });
-});
-/*
-* Slett utfordring
-*/
-function finnBrukerOgSlettUtfordring(userId, battleId){
-    User.findById(userId).populate('utfordringer').where('utfordringer.id').equals(battleId).exec(function(err, user){
-       if(err || !user){
-           console.log(err);
-           return;
-       } else {
-           var funnet = false;
-           for(var i = 0; i < user.utfordringer.length && !funnet; i++){
-               if(user.utfordringer[i].id.equals(battleId)){ // sletter utfordringen 
-                   user.utfordringer.pull({ _id: user.utfordringer[i]._id }); //funker bare på _id
-                   user.save();
-                   funnet = true;
-               }
-           }
-           return;
-       }
-    });
-}
-/*
-* Finn brukeren og oppdater totalscoren.
-*/
-function finnBrukerOgOppdaterTotalScore(userId, score){
-    User.findById(userId, function(err, user) {
-       if(err){
-           console.log(err);
-       } else {
-           var scoren = Number(score);
-           user.totalscore += scoren;
-           user.save();
-           console.log(user.totalscore);
-           return;
-       }
-    });
-};
-
-/*
-* Ny utfordring
-*/
-function lagNyUtfordring(userId, battleId){
-    User.findById(userId, function(err, user) {
-       if(err){
-           console.log(err);
-       } else {
-           var nyUtfordring = {
-                id: battleId,
-                ferdig: false
-            }
-            user.utfordringer.push(nyUtfordring)
-            user.save();
-            return;
-       }
-    });
-}
-
-function finnSpillerPaaUsername(username){
-   var query = User.findOne({"username":username});
-   return query;
-}
 
 /*
 * Oppretter ny battle mellom utfordrer og motspiller. Sender spilleren til arena.
@@ -159,19 +82,67 @@ router.post("/",function(req, res){
     }); //query
 });
 
+//Ny kamp
+router.get("/new",middle.isLoggedIn, function(req,res){
+    res.render("Battles/new");
+});
+
+/*
+* Battle user history page.
+* Return alle battler brukeren har spillt. 
+*/ 
+router.get("/history", middle.isLoggedIn, function(req, res) {
+    var currentUser = res.locals.currentUser;
+    Battle.find({$or:[ {'utfordrer.id': currentUser}, {'motstander.id': currentUser}]}).exec(function (err, battle) {
+                if (err){
+                    console.log(err);
+                }else{
+                    var battles = [];
+                    for(var i = 0; i < battle.length; i ++){
+                        if(battle[i].utfordrer.ferdig && battle[i].motstander.ferdig){
+                            battles.push(battle[i]);
+                        }
+                    }
+                    console.log("===========BATTLES AV CURRENTUSER=============");
+                    console.log(battle.length);
+                    res.render("Battles/show", {battle:battle})
+                }
+    });
+});
+/*
+* Brukeren sin show route. 
+* henter alle spill som spilleren har spilt. Spilleren skal få full oversikt over kampene sine.
+* Uspilte kamper skal kunne bli spilt herfra.
+*/
+router.get("/user/:player_id",function(req, res){
+    var currentUser = req.params.player_id;
+        Battle.find({$or:[ {'utfordrer.id': currentUser}, {'motstander.id': currentUser}]}).exec(function (err, battle) {
+                if (err){
+                    console.log("skjer en feil på battle/spiller_id i battle ruten");
+                    console.log(err.message);
+                }else{
+                    res.render("Battles/show", {battle: battle});
+                }
+    });
+});
+
+
 /*
 * Get battle_Id/player_Id. Etter at motstander har fått utfordring skal brukeren bli redirected ut hvor han skal spille.
 */
 router.get("/:battle_id/:player_id", function(req, res) {
     Battle.findById(req.params.battle_id, function(err, battle) {
-       if(err){
-           console.log(err);
-       } else{
+      if(err){
+          console.log("feil fra battle id/playerid i battle ruten")
+          console.log(err.message);//skjer en feil her når spille render battle/new
+      } else{
             req.flash("sucess", "battle is about to begin");
             res.render("Battles/challenge", {battle: battle});
         }
     });
 });
+
+
 
 /* 
 *  Updater scoren til spilleren som har utfordret til kamp. 
@@ -182,7 +153,7 @@ router.put("/:battle_id/:player_id",function(req,res){
     var currentSpiller = req.params.player_id;
     Battle.findById(req.params.battle_id, function(err,battle){
        if(err){
-           console.log(err);
+           console.log(err.message);
        }else{
             if(battle.utfordrer.id.equals(currentSpiller)){
                console.log("utfordrer er ferdig!")
@@ -199,31 +170,100 @@ router.put("/:battle_id/:player_id",function(req,res){
            finnBrukerOgSlettUtfordring(currentSpiller,req.params.battle_id);
            battle.save(); //lagrer battle
            req.flash("success", "battle updated!");
-           res.redirect("/battle/" + currentSpiller);
+           res.redirect("/battle/user/" + currentSpiller);
        }
    }) 
 });
 
-//Ny kamp
-router.get("/new",middle.isLoggedIn, function(req,res){
-    res.render("Battles/new");
+
+
+
+router.get("/:battle_id/stats", function(req, res) {
+   Battle.findById(req.params.battle_id, function(err, battle) {
+       if(err){
+           console.log(err.message);
+           req.flash("error", err.message);
+       }else {
+           req.flash("success", "Battle Complete!");
+           console.log(battle.utfordrer);
+           res.send("her kommer stats etter kampen");
+       }
+   }) 
 });
 
+
 /*
-* Brukeren sin show route. 
-* henter alle spill som spilleren har spilt. Spilleren skal få full oversikt over kampene sine.
-* Uspilte kamper skal kunne bli spilt herfra.
+* Slett utfordring
 */
-router.get("/:player_id",function(req, res){
-    var currentUser = req.params.player_id;
-        Battle.find({$or:[ {'utfordrer.id': currentUser}, {'motstander.id': currentUser}]}).exec(function (err, battle) {
-                if (err){
-                    console.log(err);
-                }else{
-                    console.log(battle);
-                    res.render("Battles/show", {battle:battle});
-                }
+function finnBrukerOgSlettUtfordring(userId, battleId){
+    User.findById(userId).populate('utfordringer').where('utfordringer.id').equals(battleId).exec(function(err, user){
+       if(err || !user){
+           console.log(err);
+           return;
+       } else {
+           var funnet = false;
+           for(var i = 0; i < user.utfordringer.length && !funnet; i++){
+               if(user.utfordringer[i].id.equals(battleId)){ // sletter utfordringen 
+                   user.utfordringer.pull({ _id: user.utfordringer[i]._id }); //funker bare på _id
+                   user.save();
+                   funnet = true;
+               }
+           }
+           return;
+       }
     });
-});
+}
+/*
+* Finn brukeren og oppdater totalscoren.
+*/
+function finnBrukerOgOppdaterTotalScore(userId, score){
+    User.findById(userId, function(err, user) {
+       if(err){
+           console.log(err);
+       } else {
+           var scoren = Number(score);
+           var poeng;
+           if(score >= 0 && score < 200){
+               poeng = 2;
+               user.totalscore += poeng;
+           } else if(score >= 200 && score < 500) {
+               user.totalscore = 9;
+           } else if(score >= 500 && score < 1000){
+               poeng = 20;
+               user.totalscore += poeng;
+           }else {
+               user.totalscore += 30;
+           }
+           //user.totalscore += scoren;
+           user.save();
+           console.log(user.totalscore);
+           return;
+       }
+    });
+};
+
+/*
+* Ny utfordring
+*/
+function lagNyUtfordring(userId, battleId){
+    User.findById(userId, function(err, user) {
+       if(err){
+           console.log(err);
+       } else {
+           var nyUtfordring = {
+                id: battleId,
+                ferdig: false
+            }
+            user.utfordringer.push(nyUtfordring)
+            user.save();
+            return;
+       }
+    });
+}
+
+function finnSpillerPaaUsername(username){
+   var query = User.findOne({"username":username});
+   return query;
+}
 
 module.exports = router; //exportert slik at den kan brukes i app.js

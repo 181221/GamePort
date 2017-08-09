@@ -21,14 +21,11 @@ router.get("/:username/settings", isLoggedIn, function(req,res){
     var reqbruker = req.params.username; 
     var currentUser = req.user.username; 
     var query = User.findOne({ 'username': reqbruker });
-    
     if(reqbruker === currentUser){
         query.exec(function (err, funnetBruker) {
-            
         if (err) {
-             console.log(err);
+          console.log(err);
         }else {
-            console.log(funnetBruker);
           res.render("./brukere/settings", {brukeren: funnetBruker});
         }
   

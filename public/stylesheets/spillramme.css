@@ -16,7 +16,7 @@ table thead tr th {
     width: 95%;
 }
 #justert {
-    margin-top: 20px;
+    margin-top: 40px;
 }
 
 #justert > thead > tr > th:nth-child(1){
@@ -28,7 +28,7 @@ table thead tr th {
 }
 #justert > thead > tr > th:nth-child(3) {
     color: #48c3ff;
-    width: 25%;
+    width: 19%;
 }
 #justert > thead > tr > th:nth-child(4){
     width: 12%;
@@ -36,10 +36,38 @@ table thead tr th {
 }
 #justert > thead > tr > th:nth-child(5) {
     color: #ecd004;
+    width: 11%;
 }
 #justert > thead {
     font-size:1.4em;
 }
 #justert > tbody {
     font-size: 1.2em;
+    text-transform: uppercase;
+}
+
+#justert > tbody > tr > td:nth-child(6) {
+    text-align: center;
+}
+#justert > thead > tr > th:nth-child(6) {
+    text-align: center;
+}
+
+h3 {
+    color: rgba(30, 112, 191, 0.82);
+    text-align: center;
+    font-size: 1.9em;
+    text-decoration: underline;
+    text-transform: capitalize;
+    margin-top: 50px;
+    margin-bottom: 23px;
+}
+
+.strek {
+    border: 0.4px solid #ddd;
+    margin: 43px 132px;
+}
+#overskrift-show {
+    margin-top: 23px;
+    text-transform: uppercase;
 }

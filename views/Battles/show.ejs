@@ -5,93 +5,107 @@
   }
 </style>
 <div class="ui container">
-<table class="ui selectable inverted table" id="justert">
-  <thead>
-    <tr>
-      <th>Game</th>
-      <th>Challenger</th>
-      <th>Score C</th>
-      <th>Oppenent</th>
-      <th>Score O</th>
-      <th>Winner</th>
-      
-    </tr>
-  </thead>
-  <tbody>
-    
-    <% for(var i = 0; i < battle.length; i ++){ %>
-    <tr>
-      <% var challenger = battle[i].utfordrer;%>
-      <% var opponent = battle[i].motstander;%>
-      <% var challengerWins = 0 %>
-      <% var opponentWins = 0 %>
-      <% var vinner; %>
-      <% var visVinner; %>
-      <% if(challenger.score >= 0 && opponent.score >=0){%>
-        <% visVinner = true; %>
-        <% if(challenger.score > opponent.score) {%>
-            <% vinner = challenger.username; %>
-            <% challengerWins++; %>
-        <% } else if (challenger.score === opponent.score){%>
-          <% vinner = "Uavgjort"%>
-        <% } else { %>
-            <% vinner = opponent.username; %>
-            <% opponentWins++; %>
-        <% } %>
-      <% } %>
-      <td><span><a href="#"> <%= i + ":"%></a> <%= battle[i].spill.navn %></span></td>
-      <td><%= challenger.username; %></td>
-      <td><%= challenger.score %></td>
-      <td><%= opponent.username; %></td>
-      <td><%= opponent.score %></td>
-      <% if(visVinner) {%>
-        <td><%= vinner %></td>
-      <% } else {%>
-        <td>venter på score</td>
-      <% }%>
-    </tr>
+    <h3 id="overskrift-show">Battles</h3>
+    <table class="ui selectable inverted table" id="justert">
+      <thead>
+        <tr>
+          <th>Game</th>
+          <th>Challenger</th>
+          <th>Score</th>
+          <th>Oppenent</th>
+          <th>Score</th>
+          <th>Winner</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% var challengerWins = 0; %>
+        <% var opponentWins = 0; %>
+        <% var vinner; %>
+        <% var visVinner = false; %>
+        <% var unPlayedBattles = []; %>
+        <% for(var i = battle.length-1; i >= 0; i --){ %>
+          <% var challenger = battle[i].utfordrer;%>
+          <% var opponent = battle[i].motstander;%>
+          <% if(challenger.score >=0  && opponent.score >=0){%>
+            <% visVinner = true; %>
+            <% if(challenger.score > opponent.score) {%>
+                <% vinner = challenger.username; %>
+                <% challengerWins++; %>
+            <% } else if (challenger.score === opponent.score){%>
+              <% vinner = "Uavgjort"%>
+            <% } else { %>
+                <% vinner = opponent.username; %>
+                <% opponentWins++; %>
+            <% } %>
+          <% } %>
+        <tr>
+          <% if(visVinner){%>
+              <td><span><a href="#"> <%= i + ":"%></a> <%= battle[i].spill.navn %></span></td>
+              <td><%= challenger.username; %></td>
+              <td><%= challenger.score %></td>
+              <td><%= opponent.username; %></td>
+              <td><%= opponent.score %></td>
+              <td><%= vinner %></td>
+          <% } else {%>
+            <% unPlayedBattles.push(battle[i]) %>
+          <% }%>
+          <% visVinner = false; %>
+        </tr>
+        <% } %> <!--for-->
+      </tbody>
+    </table>
+    </div>
+    <div class="strek"></div>
+    <div class="ui container">
+    <% if(unPlayedBattles.length > 0) {%>
+      <h3>Unplayed battles</h3>
+      <table class="ui inverted table" id="justert">
+          <thead>
+              <tr>
+                  <th>Game</th>
+                  <th>Challenger</th>
+                  <th>Score C</th>
+                  <th>Oppenent</th>
+                  <th>Score O</th>
+                  <th>Winner</th>
+              </tr>
+          </thead>
+          <tbody>
+              <% for(var i = unPlayedBattles.length-1; i >= 0; i--){%>
+               <% var challenger = unPlayedBattles[i].utfordrer;%>
+               <% var opponent = unPlayedBattles[i].motstander;%>
+              <tr>
+                  <td><span><a href="#"> <%= i + ":"%></a> <%= unPlayedBattles[i].spill.navn %></span></td>
+                  <td><%= challenger.username; %></td>
+                  <td><%= challenger.score %></td>
+                  <td><%= opponent.username; %></td>
+                  <td><%= opponent.score %></td>
+                  <td>Venter på score</td>
+              </tr>
+              <% }%>
+          </tbody>
+      </table>
     <% } %>
-  </tbody>
-  
-</table>
-<table class="ui inverted table">
-  <thead>
-    <tr>
-      <th>Games</th>
-      <th>Wins</th>
-      <th>Losses</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><%=battle.length%></td>
-      <% if(currentUser.username === challenger.username){ %>
-        <td><%= challengerWins %></td>
-        
-      <% } else { %>
-         <td><%= opponentWins %></td> 
-         
-      <% } %>
+    <table class="ui inverted table" id="justert">
+      <thead>
+        <tr>
+          <th>Games</th>
+          <th>Wins</th>
+          <th>Losses</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><%=battle.length%></td>
+           <% if(currentUser.username === challenger.username){ %>
+           <td><%= challengerWins %></td>
+           <% } else { %>
+             <td><%= opponentWins %></td> 
+          <% } %>
+        </tr>
+      </tbody>
+     </table>
+      <h2><a href="/battle/new">Challenge an opponent to a battle </a></h2>
       
-    </tr>
-  </tbody>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h1></h1>
-<a href="/battle/new">Challenge an opponent to a battle </a>
-
-
+</div> <!--CONTAINER-->
 <% include ../partials/footer %>
