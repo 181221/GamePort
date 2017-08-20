@@ -1,4 +1,13 @@
-
+#finalScore{
+    width: 16%;
+    margin-left: 22.5%;
+    margin-top: 10px;
+}
+.gamebtn {
+    margin:auto;
+    width: 50%;
+    display: block;
+}
 p#scoren {
     display: inline;
     position: absolute;

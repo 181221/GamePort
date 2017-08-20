@@ -5,13 +5,13 @@ var Battle = require("../models/battle");
 var Spill = require("../models/spill");
 var middle = require("../middleware/index");
 var mongoose = require('mongoose');
-
 /*
 * Battle landing siden
 * Viser landingsiden og om brukeren har fått nye utfordringer!
 */
 router.get("/", middle.isLoggedIn, function(req, res) {
    var currentUser = res.locals.currentUser;
+   var battleInfo = [];
    User.findById(currentUser).populate('utfordringer').where('utfordringer.ferdig').equals(false).exec(function (err, user) {
        if(err){
            console.log(err);
@@ -28,7 +28,7 @@ router.get("/", middle.isLoggedIn, function(req, res) {
            }else {
                antall = 0;
            }
-           res.render("Battles/index", {antallUtfordringer: antall, utfordringer: user, idArray: idArray});
+           res.render("Battles/index", {antallUtfordringer: antall, utfordringer: user, idArray: idArray, battle: battleInfo });
            
        }
    });
@@ -212,6 +212,20 @@ function finnBrukerOgSlettUtfordring(userId, battleId){
        }
     });
 }
+
+function finnBattlePaaId(battle_id){
+     
+    Battle.findById(battle_id, function(err, battle) {
+        if(err){
+            console.log(err.message);
+        }else {
+            battleUtfordrer = battle.utfordrer.username;
+            return battle;
+        }
+    });
+   
+}
+
 /*
 * Finn brukeren og oppdater totalscoren.
 */

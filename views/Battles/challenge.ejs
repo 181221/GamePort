@@ -25,11 +25,12 @@
             <p id="test"></p>
         </div>
     </div>
-    <div id="knapp"></div>
     <%console.log("fra challenge filen: battle id " + battle._id + " player_Id: " + currentUser.id)%>
+    
     <form action="/battle/<%= battle._id + "/" + currentUser.id%>?_method=PUT" method="POST">
          <div class="form-group">
-             <button onclick="submitScore()" id="finalScore" type="Submit" name="score">Submit Score!</button>
+             
+             <button onclick="submitScore()" id="finalScore" class="btn btn-lg btn-primary btn-block" type="Submit" name="score">Submit Score!</button>
                  <script type="text/javascript">
                      function submitScore(){
                          var score = document.querySelector("#scoren").firstChild.innerHTML;

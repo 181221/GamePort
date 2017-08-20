@@ -43,8 +43,8 @@ function setup() {
   myP.id()
   myP.parent("scoren");
   resetSketch();
-	button = createButton("Start Game!");
-	//button.parent("knapp");
+	button = createButton("Start Game");
+	button.addClass("btn btn-lg btn-primary gamebtn");
 	button.mousePressed(resetSketch);
   noLoop();
   
