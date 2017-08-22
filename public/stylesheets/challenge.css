@@ -33,6 +33,25 @@
     text-transform: capitalize;
     
 }
+h1.arena {
+    text-transform: capitalize;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 500;
+}
+h1.first-section {
+    text-transform: uppercase;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 600;
+}
+#opponent{
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 600;
+}
+#battlearena-overskrift , .overskrift > h4, #challenge-overskrift  {
+    text-transform: capitalize;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 500;
+}
 
 /* NEW CHALLENGE  */
 

@@ -18,7 +18,8 @@ var UserSchema = new mongoose.Schema({
       default: false
    },
    beskrivelse: {type: String, default: null},
-   opprettet: Date
+   opprettet: Date,
+   membertype: String
 });
 
 UserSchema.plugin(passportLocalMongoose);

@@ -16,7 +16,7 @@
 <div class="ui container">
     
     <div class ="overskrift">
-        <h1>Challenge: </h1>
+        <h1 id="challenge-overskrift">Challenge</h1>
         <h4><%= battle.utfordrer.username%> vs <%= battle.motstander.username%></h4>
     </div>
     <div class="gamecontent">
@@ -29,7 +29,6 @@
     
     <form action="/battle/<%= battle._id + "/" + currentUser.id%>?_method=PUT" method="POST">
          <div class="form-group">
-             
              <button onclick="submitScore()" id="finalScore" class="btn btn-lg btn-primary btn-block" type="Submit" name="score">Submit Score!</button>
                  <script type="text/javascript">
                      function submitScore(){

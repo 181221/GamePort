@@ -4,10 +4,17 @@
     margin-top: 10px;
 }
 .gamebtn {
-    margin:auto;
-    width: 50%;
+    margin: auto;
+    width: 9.3%;
     display: block;
+    margin-right: 56.6%;
+    color: #ffffff;
+    background-color: green;
 }
+.gamebtn:hover {
+    background-color: black;
+}
+
 p#scoren {
     display: inline;
     position: absolute;
