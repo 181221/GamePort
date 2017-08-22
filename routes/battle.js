@@ -62,7 +62,7 @@ router.post("/",function(req, res){
             ferdig: false
          };
          var spill = {
-            navn: req.body.spill,
+            //navn: "SpaceInvaders", //req.body.spill
             beskrivelse: utfordrer.username + " vs " + motstander.username
         };
         var nyBattle = {utfordrer: utfordrer, motstander: motstander, spill: spill, tidspunkt: Date.now()};
