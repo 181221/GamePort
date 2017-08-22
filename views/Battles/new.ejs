@@ -3,11 +3,11 @@
 
 <div class="container">
     <div class="row">
-        <h1 style="text-align: center" class="first-section"> <%=currentUser.username.toUpperCase()  %> vs </h1>
+        <h1 style="text-align: center" class="first-section"> <%=currentUser.username.toUpperCase()  %> vs <span id="opponent"></span></h1>
         <div style="width: 30%; margin: 25px auto;">
             <form action="/battle" method="POST">
                 <div class="form-group">
-                    <input class="form-control" type="text" name="motstander" placeholder="motstander sitt brukernavn">
+                    <input class="form-control" id="mostander-input" type="text" name="motstander" placeholder="motstander sitt brukernavn">
                 </div>
                 <!--<div class="form-group">-->
                 <!--    <input class="form-control" type="text" name="spill" placeholder="spill..">-->
@@ -20,5 +20,10 @@
         </div>
     </div>
 </div>
-
+    <script>
+        $("#mostander-input").keyup(function () {
+          var value = $(this).val();
+          $("#opponent").text(value.toUpperCase());
+        }).keyup();
+    </script>
 <% include ../partials/footer %>

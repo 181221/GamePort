@@ -81,7 +81,6 @@ section img {
 }
 @media only screen and (max-width: 768px){
     #menu-icon {
-        border: 3px solid #eee;
         display: block;
         width: 1%;
         padding-left: 190%;
