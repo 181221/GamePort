@@ -15,8 +15,10 @@ var express     = require("express"),
     indexRuter = require("./routes/index"),
     profilRuter = require("./routes/profil");
 //require("./views/partials/header.js");
-mongoose.connect("mongodb://localhost/gameportv14");
+mongoose.connect("mongodb://localhost/gameportv15", {useMongoClient: true});
 app.use(bodyParser.urlencoded({extended: true}));
+mongoose.Promise = global.Promise;
+
 
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));

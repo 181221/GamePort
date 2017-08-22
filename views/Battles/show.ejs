@@ -96,11 +96,15 @@
       </thead>
       <tbody>
         <tr>
+        <% try { %>
           <td><%=battle.length%></td>
            <% if(currentUser.username === challenger.username){ %>
            <td><%= challengerWins %></td>
            <% } else { %>
              <td><%= opponentWins %></td> 
+          <% } %>
+          <% catch(err) {%>
+              <p>no battles</p>
           <% } %>
         </tr>
       </tbody>

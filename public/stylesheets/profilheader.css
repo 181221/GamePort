@@ -18,5 +18,18 @@
 .first-section {
     margin-top: 20%;
 }
+#brukeren {
+    font-size: 1.7em;
+    color: #4183c4;
+    text-transform: uppercase;
+    text-decoration: underline;
+    font-style: bold;
+}
+#dato {
+    padding-top: 13px;
+}
 
+span.date{
+    font-style: italic;
+}
 

@@ -5,36 +5,51 @@
       <div class="four wide column">
          <div class="ui card ">
             <div class="image">
-               <% try { %>
-               <% if (brukeren.avatar === null) {%>
-               <img src="http://www.msecmarketing.com/wp-content/uploads/2017/01/default.gif">
-               <% } else { %>
-               <img src="<%= brukeren.avatar %>"> 
-               <% } %>
-               <% }catch(err) { %>
-               <img src="http://www.msecmarketing.com/wp-content/uploads/2017/01/default.gif">
-               <% } %>
+                  <img src=<%= brukeren.avatar.toString() %>>
             </div>
          </div>
          <hr>
          <div class="content">
-            <a class="header">
+            <div id="brukeren">
                <% try { %>
-                 <%= brukeren.username %>
+                 <%= brukeren.username %> 
                <% } catch(err) { %>
                  <script>
                     document.querySelector(".header").innerHTML = "finner ikke brukernavn";
                  </script>
                <% } %>
-            </a>
+            </div>
             <div class="meta">
-               <span class="date">Create in Sep 2014</span>
-               <p>Lorem Ipsum er rett og slett dummytekst fra og for trykkeindustrien. Lorem Ipsum har vært bransjens standard for dummytekst helt siden 1500-tallet</p>
+                <div id="dato">
+               <% try { %>
+                  Joined: <span class="date"><%= brukeren.opprettet.toDateString() %></span>
+               <% } catch(err) { %>
+                  <script>
+                    document.querySelector(".date").innerHTML = "";
+                 </script>
+               <% } %>
+            </div>
+            <div id="beskrivelse">
+               <% try { %>
+                <% if(brukeren.beskrivelse === "") {%>
+                    <% if(currentUser) { %>
+                        <p><a href="/<%= currentUser.username %>/settings">Skriv en beskrivelse</a></p> %>
+                    <% }else {%>
+                        <%= brukeren.beskrivelse %>
+                    <% }%>
+                <% } else {%>
+                    <p><%= brukeren.beskrivelse %></p>
+                <% }%>
+               <% } catch(err) { %>
+                  <div>ingen beskrivelse</div>
+               <% } %>
+               </div>
+               
             </div>
             <div class="extra content">
                <a>
                <i class="users icon"></i>
-               2 Members
+               
                </a>
             </div>
          </div>

@@ -106,7 +106,12 @@ router.get("/history", middle.isLoggedIn, function(req, res) {
                     }
                     console.log("===========BATTLES AV CURRENTUSER=============");
                     console.log(battle.length);
-                    res.render("Battles/show", {battle:battle})
+                    if(battle.length > 0) {
+                        res.render("Battles/show", {battle:battle});
+                    }else {
+                        res.send("you have no battles jet")
+                    }
+                    
                 }
     });
 });

@@ -7,7 +7,7 @@ var UserSchema = new mongoose.Schema({
    forNavn: String,
    etterNavn: String,
    email: String,
-   avatar: String,
+   avatar: {type: String, default: "http://www.msecmarketing.com/wp-content/uploads/2017/01/default.gif"},
    utfordringer: [{
       id: {type: mongoose.Schema.Types.ObjectId, ref: "Battle"},
       ferdig: {type: Boolean, default: false}
@@ -16,7 +16,9 @@ var UserSchema = new mongoose.Schema({
    isAdmin: {
       type: Boolean,
       default: false
-   }
+   },
+   beskrivelse: {type: String, default: null},
+   opprettet: Date
 });
 
 UserSchema.plugin(passportLocalMongoose);
