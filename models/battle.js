@@ -17,7 +17,7 @@ var battleSchema = new mongoose.Schema({
    spill:
        {
            id: {type: mongoose.Schema.Types.ObjectId, ref: "Game"},
-           navn: {type: String, default:"SpaceInvaders"},
+           navn: String,
            beskrivelse: String
        },
    tidspunkt: Date

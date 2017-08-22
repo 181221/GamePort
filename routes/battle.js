@@ -62,7 +62,7 @@ router.post("/",function(req, res){
             ferdig: false
          };
          var spill = {
-            //navn: "SpaceInvaders", //req.body.spill
+            navn: req.body.spill,
             beskrivelse: utfordrer.username + " vs " + motstander.username
         };
         var nyBattle = {utfordrer: utfordrer, motstander: motstander, spill: spill, tidspunkt: Date.now()};
@@ -98,7 +98,7 @@ router.get("/history", middle.isLoggedIn, function(req, res) {
     var currentUser = res.locals.currentUser;
     Battle.find({$or:[ {'utfordrer.id': currentUser}, {'motstander.id': currentUser}]}).exec(function (err, battle) {
                 if (err){
-                    console.log(err);
+                    console.log(err.message);
                 }else{
                     var battles = [];
                     for(var i = 0; i < battle.length; i ++){
@@ -109,7 +109,7 @@ router.get("/history", middle.isLoggedIn, function(req, res) {
                     console.log("===========BATTLES AV CURRENTUSER=============");
                     console.log(battle.length);
                     if(battle.length > 0) {
-                        res.render("Battles/show", {battle:battle});
+                        res.render("Battles/show", {battle: battle});
                     }else {
                         req.flash("error","Du har ingen Battles, challenge en spiller!")
                         res.redirect("back");
