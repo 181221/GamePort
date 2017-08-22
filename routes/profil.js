@@ -45,6 +45,7 @@ router.put("/:username/settings", isLoggedIn, function(req, res){
             //finner bare første bruker i database ps oppdatater dette
             console.log("updated" + updatedBruker);
              console.log("updated: " + updatedBruker.username);
+             console.log("updated:" + updatedBruker.beskrivelse);
             res.redirect("/"+req.params.username);
         }
     })

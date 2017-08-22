@@ -23,31 +23,31 @@
                <% } %>
             </div>
             <div class="meta">
-                <div id="dato">
-               <% try { %>
-                  Joined: <span class="date"><%= brukeren.opprettet.toDateString() %></span>
-               <% } catch(err) { %>
-                  <script>
-                    document.querySelector(".date").innerHTML = "";
-                 </script>
-               <% } %>
-            </div>
-            <div id="beskrivelse">
-               <% try { %>
-                <% if(brukeren.beskrivelse === "") {%>
-                    <% if(currentUser) { %>
-                        <p><a href="/<%= currentUser.username %>/settings">Skriv en beskrivelse</a></p> %>
-                    <% }else {%>
-                        <%= brukeren.beskrivelse %>
+                <hr>
+                <div id="beskrivelse">
+                   <% try { %>
+                    <% if(brukeren.beskrivelse === "") {%>
+                        <% if(currentUser) { %>
+                            <p><a href="/<%= currentUser.username %>/settings">Skriv en beskrivelse</a></p> %>
+                        <% }else {%>
+                            <%= brukeren.beskrivelse %>
+                        <% }%>
+                    <% } else {%>
+                        <p><%= brukeren.beskrivelse %></p>
                     <% }%>
-                <% } else {%>
-                    <p><%= brukeren.beskrivelse %></p>
-                <% }%>
-               <% } catch(err) { %>
-                  <div>ingen beskrivelse</div>
-               <% } %>
+                   <% } catch(err) { %>
+                      <div>ingen beskrivelse</div>
+                   <% } %>
                </div>
-               
+               <div id="dato">
+                   <% try { %>
+                      <p>Member since: <span class="date"><%= brukeren.opprettet.toDateString() %></span></p>
+                   <% } catch(err) { %>
+                      <script>
+                        document.querySelector(".date").innerHTML = "";
+                     </script>
+                   <% } %>
+                </div>
             </div>
             <div class="extra content">
                <a>

@@ -19,17 +19,30 @@
     margin-top: 20%;
 }
 #brukeren {
-    font-size: 1.7em;
+    font-size: 2.5em;
     color: #4183c4;
     text-transform: uppercase;
-    text-decoration: underline;
     font-style: bold;
+    text-align: left;
 }
 #dato {
     padding-top: 13px;
 }
+#dato > p {
+    padding-bottom: 5px;
+}
+#beskrivelse > p {
+    font-family: sans-serif;
+    color: #6a737d;
+    font-style: italic;
+    font-size: 1.3em;
+    opacity: 0.8;
+}
 
 span.date{
     font-style: italic;
+}
+.ui.grid {
+    padding-top: 10px;
 }
 

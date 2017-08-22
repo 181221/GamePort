@@ -14,10 +14,6 @@ router.get("/:username/games/nyttspill", function(req, res) {
 });
 
 
-
-
-
-
 router.get("/:username/games/spaceinvaders/:battleid/stats", function(req, res) {
     res.send(req.body);
 });

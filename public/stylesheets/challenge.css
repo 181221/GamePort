@@ -20,5 +20,19 @@
     
 }
 
+#space-h3 {
+    color: #0aa10a;
+    text-decoration: none;
+}
+
+.overskrift > h1 {
+    color: green;
+}
+
+.overskrift > h4 {
+    text-transform: capitalize;
+    
+}
+
 /* NEW CHALLENGE  */
 
