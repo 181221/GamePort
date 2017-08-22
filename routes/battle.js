@@ -51,8 +51,10 @@ router.post("/",function(req, res){
     //spørring returnerer undefined.. derfor kan jeg ikke gjøre dette i en funksjon. 
     var query =  finnSpillerPaaUsername(req.body.motstander);
         query.exec(function(err,bruker){
-     if(err){
+     if(err || !bruker){
          console.log(err);
+         req.flash("error", "Finner ikke brukeren")
+         res.redirect("back");
      }else {
          var motstander = {
             id: bruker._id,
@@ -109,7 +111,8 @@ router.get("/history", middle.isLoggedIn, function(req, res) {
                     if(battle.length > 0) {
                         res.render("Battles/show", {battle:battle});
                     }else {
-                        res.send("you have no battles jet")
+                        req.flash("error","Du har ingen Battles, challenge en spiller!")
+                        res.redirect("back");
                     }
                     
                 }

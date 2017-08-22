@@ -88,7 +88,7 @@ router.post("/register", function(req,res){
        }
        passport.authenticate("local")(req, res, function(){
            req.flash("success", "Velkommen til gameport!!");
-           res.redirect("/");
+           res.redirect("/"+ req.user.username);
        });
    });
 });

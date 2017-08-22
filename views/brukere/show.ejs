@@ -5,7 +5,10 @@
       <div class="four wide column">
          <div class="ui card ">
             <div class="image">
+                <% try { %>
                   <img src=<%= brukeren.avatar.toString() %>>
+                <% } catch(err) { %>
+                <% } %>
             </div>
          </div>
          <hr>
