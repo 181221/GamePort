@@ -15,7 +15,8 @@ var express     = require("express"),
     indexRuter = require("./routes/index"),
     profilRuter = require("./routes/profil");
 //require("./views/partials/header.js");
-mongoose.connect("mongodb://localhost/gameportv16", {useMongoClient: true});
+var url = process.env.DATABASEURL || "mongodb://localhost/gameportv16";
+mongoose.connect(url , {useMongoClient: true});
 app.use(bodyParser.urlencoded({extended: true}));
 mongoose.Promise = global.Promise;
 

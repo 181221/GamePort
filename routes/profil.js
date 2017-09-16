@@ -73,7 +73,7 @@ function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
         return next();
     }
-    req.flash("error","You need to be logged in to do that!");//legger til flash. coden skal utføres før du redirecter!
+    req.flash("error","Du må være innlogget for å gjøre dette!");//legger til flash. coden skal utføres før du redirecter!
     res.redirect("/login");
 };
 
