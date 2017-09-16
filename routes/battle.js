@@ -20,16 +20,29 @@ router.get("/", middle.isLoggedIn, function(req, res) {
        }else {
            var antall;
            var idArray = [];
+           var utforderere = [];
            if(user){
                 for(var i = 0; i < user.utfordringer.length; i++){
                     idArray[i] = user.utfordringer[i].id;
+                    /*Battle.findById(user.utfordringer[i].id, function(err, battle) {
+                       if(err){
+                           console.log(err);
+                       }else {
+                           var motstander = battle.motstander.username;
+                           var utfordrer = battle.utfordrer.username;
+                           if(motstander === currentUser.username) {
+                               utforderere.push(motstander)
+                           }else {
+                               utforderere.push(utfordrer);
+                           }
+                       }
+                    });*/
                 }
                 antall = idArray.length;
            }else {
                antall = 0;
            }
-           res.render("Battles/index", {antallUtfordringer: antall, utfordringer: user, idArray: idArray, battle: battleInfo });
-           
+           res.render("Battles/index", {antallUtfordringer: antall, utfordringer: user, idArray: idArray, battle: battleInfo, spillernavn: utforderere});
        }
    });
 });
@@ -118,6 +131,7 @@ router.get("/history", middle.isLoggedIn, function(req, res) {
                 }
     });
 });
+
 /*
 * Brukeren sin show route. 
 * henter alle spill som spilleren har spilt. Spilleren skal få full oversikt over kampene sine.
@@ -152,7 +166,6 @@ router.get("/:battle_id/:player_id", function(req, res) {
 });
 
 
-
 /* 
 *  Updater scoren til spilleren som har utfordret til kamp. 
 *  Oppdaterer utfordringer til spilleren.
@@ -184,6 +197,15 @@ router.put("/:battle_id/:player_id",function(req,res){
    }) 
 });
 
+router.post("/:currentuserId/:battleId/", function(req, res) {
+    var godta = req.body.godta; 
+    var slett = req.body.slett;
+    var battleid = req.params.battleId;
+    var user = req.params.currentuserId;
+    console.log("slett" + slett + "   godta : " + godta);
+    var motstander = finnMotstanderen(battleid, user, res);
+}); 
+
 router.get("/:battle_id/user/:username/vs/:username", function(req, res) {
    Battle.findById(req.params.battle_id, function(err, battle) {
        if(err){
@@ -197,7 +219,25 @@ router.get("/:battle_id/user/:username/vs/:username", function(req, res) {
        }
    }) 
 });
-
+function finnMotstanderen(battleid, currentUser, res) {
+    var motstander;
+    Battle.findById(battleid, function(err, battle) {
+        motstander = battle.motstander.id;
+        if(err) {
+            console.log(err);
+        }else {
+            if(motstander.equals(currentUser)) {
+                console.log("currentuser = " + currentUser)
+                motstander = battle.utfordrer.id;
+            }else {
+                console.log("motstander funnet! " + motstander);
+            }
+            finnBrukerOgSlettUtfordring(motstander, battleid);
+            finnBrukerOgSlettUtfordring(currentUser, battleid);
+            res.redirect("/back");
+        }
+    });
+};
 
 /*
 * Slett utfordring
@@ -222,7 +262,6 @@ function finnBrukerOgSlettUtfordring(userId, battleId){
 }
 
 function finnBattlePaaId(battle_id){
-     
     Battle.findById(battle_id, function(err, battle) {
         if(err){
             console.log(err.message);
