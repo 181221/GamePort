@@ -5,31 +5,30 @@
     <h1 class="first-section arena" id="battlearena-overskrift">Welcome To Battle Arena!</h1>
     <div class ="ui grid">
         <div class="twelve wide column">
-            <%if(antallUtfordringer){%>
-            <p><a href="#"><span id="nyeUtfordringer"><%= antallUtfordringer %> Nye Utfordringer!!</span></a></p>
-            <ul>
-            <% for(var i = 0; i < idArray.length;i++){%>
-                <form action="/battle/<%=currentUser.id%>/<%=idArray[i]%>" method="POST">
-                    <li><%=spillernavn[i]%> &emsp;&emsp; <input type="hidden" name="godta" value="<%=idArray[i]%>"> <input type="submit" value="accept"> <input type="hidden" name="slett" value="<%=idArray[i]%>"> <input type="submit" value="Decline"> </li>
-                </form>
-            <% }%>
-            <% }%>
-            </ul>
-            <form action="/:id" methon="POST">
-                
-            </form>
-            <div id ="utfordringene">
-                <!-- LEGGER TIL UTFORDRINGER HER! -->
-                <ul style="display:none;">
-                    
+            <% try {%> 
+               <%user.utfordringer%>
+               <p><a href="#"><span id="nyeUtfordringer"> Nye Utfordringer!!</span></a></p>
+                <div id ="utfordringene">
+                <ul style="display:block">
+                     fra 
+                    <%for(var i = 0; i < user.utfordringer.length; i++){%>
+                        <li><%=user.utfordringer[i].utfordrer%> </li>
+                    <% }%>
                 </ul>
+           <% }catch(err) {%>
+              
+           <% }%>
+            
+                
+
+                <!-- LEGGER TIL UTFORDRINGER HER! -->
             </div>
         </div>
         <div class="four wide columd">
             <p></p>
         </div>
     </div>
-    <!--<a><input type="submit" value="decline" name="slett_btn"><input type="hidden" value="'<%= idArray[i] %>'" name="slett"></a>-->
+    <!--<a><input type="submit" value="decline" name="slett_btn"><input type="hidden" value="'" name="slett"></a>-->
 <div class="ui three column grid">
   <div class="column content-container" >
       <div class="ui segment">
@@ -64,26 +63,16 @@
   </div>
 </div>
 </div>
-<form action="/:id" methon=POST>
-    
-</form>
+
 <script type="text/javascript">
-    var str = "<%=idArray%>";
-    var tab = str.split(",");
-    var currentUser = "<%=currentUser.id%>";
-    var usernametab = [];
     var span = document.querySelector('#utfordringene ul');
-    for(var i = 0; i < tab.length; i ++){
-            
-                //$("#utfordringene ul").append("<li><span><i class='fa fa-hourglass'></i></span><a href="+'battle/'+tab[i]+'/'+currentUser+">"+tab[i] +" &emsp;&emsp; accept</a> <a href="+'battle/'+tab[i]+">&emsp;decline</a></li>");
-            }
-       //viser utfordrine til spilleren. 
+   
     $(document).ready(function(){
         $("span").click(function(){
+            console.log("hei")
             $(span).toggle();
         });
     });
-    
 </script>
 
 <% include ../partials/footer %>

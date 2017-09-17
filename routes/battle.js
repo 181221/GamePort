@@ -11,41 +11,17 @@ var mongoose = require('mongoose');
 */
 router.get("/", middle.isLoggedIn, function(req, res) {
    var currentUser = res.locals.currentUser;
-   var battleInfo = [];
    User.findById(currentUser).populate('utfordringer').where('utfordringer.ferdig').equals(false).exec(function (err, user) {
        if(err){
            console.log(err);
            req.flash("error", err.message);
            res.redirect("back");
        }else {
-           var antall;
-           var idArray = [];
-           var utforderere = [];
-           if(user){
-                for(var i = 0; i < user.utfordringer.length; i++){
-                    idArray[i] = user.utfordringer[i].id;
-                    /*Battle.findById(user.utfordringer[i].id, function(err, battle) {
-                       if(err){
-                           console.log(err);
-                       }else {
-                           var motstander = battle.motstander.username;
-                           var utfordrer = battle.utfordrer.username;
-                           if(motstander === currentUser.username) {
-                               utforderere.push(motstander)
-                           }else {
-                               utforderere.push(utfordrer);
-                           }
-                       }
-                    });*/
-                }
-                antall = idArray.length;
-           }else {
-               antall = 0;
-           }
-           res.render("Battles/index", {antallUtfordringer: antall, utfordringer: user, idArray: idArray, battle: battleInfo, spillernavn: utforderere});
+            res.render("Battles/index",{user: user});   
        }
    });
 });
+
 
 /*
 * Oppretter ny battle mellom utfordrer og motspiller. Sender spilleren til arena.
@@ -59,7 +35,6 @@ router.post("/",function(req, res){
         username: res.locals.currentUser.username,
         ferdig: true
     };
-    
     //lager spørring, må utføre alt inne spørringen, for å oppdaterer motstander id
     //spørring returnerer undefined.. derfor kan jeg ikke gjøre dette i en funksjon. 
     var query =  finnSpillerPaaUsername(req.body.motstander);
@@ -79,17 +54,12 @@ router.post("/",function(req, res){
             beskrivelse: utfordrer.username + " vs " + motstander.username
         };
         var nyBattle = {utfordrer: utfordrer, motstander: motstander, spill: spill, tidspunkt: Date.now()};
-    
         Battle.create(nyBattle, function(err, battle){
             if(err){
                 console.log(err);
             } else {
-                //redirect back to campgrounds page
-                lagNyUtfordring(battle.utfordrer.id, battle._id);
-                lagNyUtfordring(battle.motstander.id, battle._id);
-                console.log("===========BATTLE============")
-                console.log(battle);
-                console.log("===========BATTLE=============")
+                //lagNyUtfordring(battle.utfordrer.id, utfordrer.username, battle._id);
+                lagNyUtfordring(battle.motstander.id, utfordrer.username, battle._id);
                 req.flash("success", "Ny Battle er Opprettet!");
                 res.render("Battles/challenge", {battle: battle});
             }
@@ -119,8 +89,6 @@ router.get("/history", middle.isLoggedIn, function(req, res) {
                             battles.push(battle[i]);
                         }
                     }
-                    console.log("===========BATTLES AV CURRENTUSER=============");
-                    console.log(battle.length);
                     if(battle.length > 0) {
                         res.render("Battles/show", {battle: battle});
                     }else {
@@ -149,7 +117,6 @@ router.get("/user/:player_id",function(req, res){
     });
 });
 
-
 /*
 * Get battle_Id/player_Id. Etter at motstander har fått utfordring skal brukeren bli redirected ut hvor han skal spille.
 */
@@ -164,8 +131,6 @@ router.get("/:battle_id/:player_id", function(req, res) {
         }
     });
 });
-
-
 /* 
 *  Updater scoren til spilleren som har utfordret til kamp. 
 *  Oppdaterer utfordringer til spilleren.
@@ -183,13 +148,12 @@ router.put("/:battle_id/:player_id",function(req,res){
                battle.utfordrer.score = req.body.score;
                finnBrukerOgOppdaterTotalScore(currentSpiller, req.body.score);
            }else {
-               console.log("motstander e ferdig!")
                battle.motstander.ferdig = true;
                battle.motstander.score = req.body.score;
-               console.log(battle.motstander.id)
                finnBrukerOgOppdaterTotalScore(battle.motstander.id, req.body.score);
            }
-           finnBrukerOgSlettUtfordring(currentSpiller,req.params.battle_id);
+        //   finnBrukerOgSlettUtfordring(battle.motstander.id, req.params.battle_id);
+        //   finnBrukerOgSlettUtfordring(currentSpiller, req.params.battle_id);
            battle.save(); //lagrer battle
            req.flash("success", "battle updated!");
            res.redirect("/battle/"+ req.params.battle_id +"/user/" + battle.utfordrer.username + "/vs/" + battle.motstander.username);
@@ -202,8 +166,8 @@ router.post("/:currentuserId/:battleId/", function(req, res) {
     var slett = req.body.slett;
     var battleid = req.params.battleId;
     var user = req.params.currentuserId;
-    console.log("slett" + slett + "   godta : " + godta);
-    var motstander = finnMotstanderen(battleid, user, res);
+    console.log("godta " + godta + "slett " + slett);
+    finnMotstanderen(battleid, user, res);
 }); 
 
 router.get("/:battle_id/user/:username/vs/:username", function(req, res) {
@@ -234,10 +198,21 @@ function finnMotstanderen(battleid, currentUser, res) {
             }
             finnBrukerOgSlettUtfordring(motstander, battleid);
             finnBrukerOgSlettUtfordring(currentUser, battleid);
-            res.redirect("/back");
+            slettBattle(battleid);
+            res.redirect("back");
         }
     });
 };
+
+function slettBattle(battleid) {
+   Battle.findByIdAndRemove(battleid, function(err){
+      if(err){
+          console.log(err);
+      } else {
+          return;
+      }
+   });
+}
 
 /*
 * Slett utfordring
@@ -270,7 +245,6 @@ function finnBattlePaaId(battle_id){
             return battle;
         }
     });
-   
 }
 
 /*
@@ -305,15 +279,17 @@ function finnBrukerOgOppdaterTotalScore(userId, score){
 /*
 * Ny utfordring
 */
-function lagNyUtfordring(userId, battleId){
+function lagNyUtfordring(userId, utfordrerNavn,battleId){
     User.findById(userId, function(err, user) {
        if(err){
            console.log(err);
        } else {
            var nyUtfordring = {
                 id: battleId,
-                ferdig: false
+                ferdig: false,
+                utfordrer: utfordrerNavn
             }
+            console.log("utfordringen " + user)
             user.utfordringer.push(nyUtfordring)
             user.save();
             return;

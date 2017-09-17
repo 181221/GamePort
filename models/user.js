@@ -10,7 +10,8 @@ var UserSchema = new mongoose.Schema({
    avatar: {type: String, default: "http://www.msecmarketing.com/wp-content/uploads/2017/01/default.gif"},
    utfordringer: [{
       id: {type: mongoose.Schema.Types.ObjectId, ref: "Battle"},
-      ferdig: {type: Boolean, default: false}
+      ferdig: {type: Boolean, default: false},
+      utfordrer: String
    }],
    totalscore: {type: Number, default: 0},
    isAdmin: {
