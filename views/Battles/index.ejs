@@ -9,18 +9,21 @@
                <%user.utfordringer%>
                <p><a href="#"><span id="nyeUtfordringer"> Nye Utfordringer!!</span></a></p>
                 <div id ="utfordringene">
-                <ul style="display:block">
-                     fra 
+                <ul style="display:none;">
                     <%for(var i = 0; i < user.utfordringer.length; i++){%>
-                        <li><%=user.utfordringer[i].utfordrer%> </li>
+                    <%= user.utfordringer[i].utfordrer%> har utfordret deg til en kamp i spaceinvaders
+                    <% var utfordrer = utfordringer[i].utfordrer; %>
+                    <% var id = utfordringer[i].id;%>
+                        <form action="/battle/<%=currentUser.id%>/<%=id%>" method="POST">
+                        <li><%=utfordrer%> <input type="hidden" name="godta" value="<%=utfordrer%>"></li>
+                        </form>
                     <% }%>
                 </ul>
            <% }catch(err) {%>
               
            <% }%>
             
-                
-
+    
                 <!-- LEGGER TIL UTFORDRINGER HER! -->
             </div>
         </div>
@@ -66,10 +69,9 @@
 
 <script type="text/javascript">
     var span = document.querySelector('#utfordringene ul');
-   
+    var ul = document.querySelector('ul');
     $(document).ready(function(){
         $("span").click(function(){
-            console.log("hei")
             $(span).toggle();
         });
     });
