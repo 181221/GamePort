@@ -1,5 +1,5 @@
 # GamePort!
-Dynamisk webside laget i node. Gameport er et nettsted hvor du kan konkurrere med vennene dine til en kamp i spaceinvaders! 
+Dynamisk webside laget i node. Gameport er et nettsted hvor du kan konkurrere med vennene dine til en kamp i spaceinvaders! Passord blir hashet med hjelp fra passportjs 
 
 ### Battle Arena - utfordre en venn, se match history eller ranking.
 ![BattleArena](https://github.com/h181221/h181221.github.io/blob/master/Gameport/bilder/battlearena.JPG)
